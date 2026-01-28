@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aljaž Frančič</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <img src="assets/avatar.png" alt="Aljaž Frančič" class="hero__avatar" width="160" height="160">
+      <h1 class="hero__name">Aljaž Frančič</h1>
+      <p class="hero__title">PhD · Software Engineer</p>
+      <p class="hero__tagline">Engineer & Researcher</p>
+      <nav class="hero__links">
+        <a href="https://github.com/aljazfrancic" rel="noopener noreferrer" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/aljazfrancic" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      </nav>
+    </header>
+
+    <section class="about" id="about">
+      <h2>About</h2>
+      <p>I’m an engineer and researcher with a PhD in Computer Science, curious about the intersection of software engineering, data systems, and artificial intelligence.</p>
+    </section>
+
+    <section class="experience" id="experience">
+      <h2>Experience</h2>
+      <article class="experience__item">
+        <h3>Software Engineer</h3>
+        <p class="experience__meta">Jan 2024 – Jan 2026</p>
+        <p class="experience__employer"><a href="https://opendaq.com/" rel="noopener noreferrer" target="_blank">openDAQ</a> by <a href="https://dewesoft.com/" rel="noopener noreferrer" target="_blank">Dewesoft</a> and <a href="https://www.hbkworld.com/" rel="noopener noreferrer" target="_blank">Hottinger Brüel &amp; Kjær</a></p>
+        <p>Improved the open source data acquisition SDK for cross-platform and multi-language interoperability. Implemented core C++ features, documentation, CI/release, testing, Python bindings, and metrics dashboards (Grafana/InfluxDB on AWS).</p>
+        <p><a href="https://github.com/openDAQ/openDAQ" rel="noopener noreferrer" target="_blank">github.com/openDAQ/openDAQ</a></p>
+      </article>
+      <article class="experience__item">
+        <h3>Young Researcher, Teaching Assistant</h3>
+        <p class="experience__meta">Oct 2018 – Oct 2022</p>
+        <p class="experience__employer"><a href="https://lspo.feri.um.si/" rel="noopener noreferrer" target="_blank">System Software Laboratory</a>, <a href="https://feri.um.si/" rel="noopener noreferrer" target="_blank">Faculty of Electrical Engineering and Computer Science</a>, <a href="https://www.um.si/" rel="noopener noreferrer" target="_blank">University of Maribor</a></p>
+        <p>Led research in electromyography (EMG) and teaching. Built end-to-end EMG pipelines (MATLAB, R), ML models for biosignals (Python, TensorFlow, Keras), and taught computer vision (OpenCV). Supervised students and contributed to peer-reviewed work.</p>
+      </article>
+    </section>
+
+    <section class="education" id="education">
+      <h2>Education</h2>
+      <p class="education__institution"><a href="https://www.um.si/" rel="noopener noreferrer" target="_blank">University of Maribor</a>, <a href="https://feri.um.si/" rel="noopener noreferrer" target="_blank">Faculty of Electrical Engineering and Computer Science</a></p>
+      <ul class="education__list">
+        <li><strong>2023:</strong> PhD, Computer Science and Informatics — <a href="https://dk.um.si/IzpisGradiva.php?id=84908" rel="noopener noreferrer" target="_blank">Software pipeline for computationally efficient and robust estimation of motor unit firing times from high density surface electromyograms</a></li>
+        <li><strong>2018:</strong> Master’s degree, Computer Science and Information Technologies — <a href="https://dk.um.si/IzpisGradiva.php?id=71712" rel="noopener noreferrer" target="_blank">Robot control with a neural network and a muscle-machine interface</a></li>
+        <li><strong>2015:</strong> Erasmus+ student exchange at Tampere University, Finland</li>
+      </ul>
+    </section>
+
+    <section class="projects" id="projects">
+      <h2>Projects</h2>
+      <div class="projects__grid">
+        <a href="https://github.com/aljazfrancic/myo-readings-dataset" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">myo-readings-dataset</h3>
+          <p class="project-card__tech">Jupyter Notebook</p>
+          <p class="project-card__desc">Myo armband machine learning EMG dataset of various hand gestures.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/myo-keras" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">myo-keras</h3>
+          <p class="project-card__tech">Jupyter Notebook</p>
+          <p class="project-card__desc">Code complementary to myo-readings-dataset: neural network to automatically determine executed gesture.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/ev3-myo" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">ev3-myo</h3>
+          <p class="project-card__tech">Java</p>
+          <p class="project-card__desc">LEGO Mindstorms EV3 TRACK3R control using the Myo armband and a neural network for gesture recognition.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/8d-audio-homebrew" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">8d-audio-homebrew</h3>
+          <p class="project-card__tech">Jupyter Notebook</p>
+          <p class="project-card__desc">Converts a regular wav file into an 8d audio wav file.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/sudoku-solver" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">sudoku-solver</h3>
+          <p class="project-card__tech">Jupyter Notebook</p>
+          <p class="project-card__desc">Computer vision: find sudoku in a photo, extract grid, recognize digits, solve, and overlay solution on the image.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/stonks-bot" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">stonks-bot</h3>
+          <p class="project-card__tech">Python</p>
+          <p class="project-card__desc">Discord bot that pulls close prices for crypto and stocks and displays them in a plot over the last N days.</p>
+        </a>
+        <a href="https://github.com/openDAQ/openDAQ" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">openDAQ</h3>
+          <p class="project-card__tech">C++</p>
+          <p class="project-card__desc">openDAQ™ data acquisition SDK — cross-platform, multi-language DAQ interoperability.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <h2>Contact</h2>
+      <ul class="contact__list">
+        <li><strong>Email:</strong> <a href="mailto:aljaz.francic@gmail.com">aljaz.francic@gmail.com</a></li>
+        <li><strong>Links:</strong> <a href="https://github.com/aljazfrancic" rel="noopener noreferrer" target="_blank">GitHub</a> · <a href="https://www.linkedin.com/in/aljazfrancic" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
