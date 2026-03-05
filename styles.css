@@ -197,18 +197,6 @@ a:focus-visible {
   margin: 0;
 }
 
-.project-card--private {
-  border-color: rgba(139, 92, 246, 0.35);
-  cursor: default;
-}
-.project-card--private:hover {
-  transform: none;
-  border-color: rgba(139, 92, 246, 0.5);
-  box-shadow: none;
-}
-.project-card--private .project-card__tech {
-  color: #a78bfa;
-}
 
 /* --- Contact --- */
 .contact__list {
