@@ -11,6 +11,10 @@
   --purple-ink: #e9e2ff;
   --purple-bg: rgba(167, 139, 250, 0.14);
   --purple-border: rgba(167, 139, 250, 0.35);
+  --red-soft: #f97373;
+  --red-ink: #ffe4e6;
+  --red-bg: rgba(248, 113, 113, 0.14);
+  --red-border: rgba(248, 113, 113, 0.35);
   --border: #2d3a4a;
   --max-width: 42rem;
   --font-sans: "DM Sans", system-ui, sans-serif;
@@ -224,6 +228,12 @@ a:focus-visible {
   background: var(--purple-bg);
   border-color: var(--purple-border);
   box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.06), 0 10px 24px rgba(167, 139, 250, 0.08);
+}
+.badge--live {
+  color: var(--red-ink);
+  background: var(--red-bg);
+  border-color: var(--red-border);
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.06), 0 10px 24px rgba(248, 113, 113, 0.08);
 }
 
 
