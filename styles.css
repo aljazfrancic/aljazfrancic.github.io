@@ -81,6 +81,7 @@ a:focus-visible {
   height: 10rem;  /* was 160px */
   margin: 0 auto 1.25rem;
   border-radius: 50%;
+  border: 2px solid var(--border);
   object-fit: cover;
   box-shadow: var(--shadow);
   animation: heroSlide 0.8s ease-out 0.1s both;
