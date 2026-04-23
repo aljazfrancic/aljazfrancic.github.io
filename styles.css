@@ -87,12 +87,6 @@ a:focus-visible {
   animation: heroSlide 0.8s ease-out 0.1s both;
 }
 .hero__name { animation: heroSlide 0.6s ease-out 0.2s both; }
-.hero__title {
-  font-size: 1rem;
-  color: var(--text-muted);
-  margin: 0.25rem 0 0.5rem;
-  animation: heroSlide 0.6s ease-out 0.3s both;
-}
 .hero__tagline {
   font-size: 1rem;
   color: var(--text-muted);
@@ -315,6 +309,6 @@ a:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero, .hero__avatar, .hero__name, .hero__title, .hero__tagline, .hero__links,
+  .hero, .hero__avatar, .hero__name, .hero__tagline, .hero__links,
   .about, .experience, .education, .projects, .contact { animation: none; }
 }
