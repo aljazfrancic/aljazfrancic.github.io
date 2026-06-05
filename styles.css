@@ -21,7 +21,7 @@
 
 /* --- Reset & base --- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { color-scheme: dark; }
 body {
   margin: 0;
   font-family: var(--font-sans);
