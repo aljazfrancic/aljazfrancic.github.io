@@ -221,8 +221,8 @@ a:focus-visible {
   line-height: 1;
   white-space: nowrap;
   /* Uniform glow: same geometry + opacity for every badge, tinted per-hue. */
-  box-shadow: 0 0 0 1px rgba(var(--glow-rgb, 148, 163, 184), 0.18),
-              0 10px 24px rgba(var(--glow-rgb, 148, 163, 184), 0.22);
+  box-shadow: 0 0 0 1px rgba(var(--glow-rgb, 148, 163, 184), 0.14),
+              0 8px 20px rgba(var(--glow-rgb, 148, 163, 184), 0.17);
 }
 .badge--fun {
   --glow-rgb: 236, 72, 153;
