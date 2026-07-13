@@ -242,6 +242,12 @@ a:focus-visible {
   background: var(--red-bg);
   border-color: var(--red-border);
 }
+.badge--monitor {
+  --glow-rgb: 34, 211, 238;
+  color: #ecfeff;
+  background: rgba(34, 211, 238, 0.18);
+  border-color: rgba(34, 211, 238, 0.6);
+}
 .badge--ml {
   --glow-rgb: 245, 158, 11;
   color: #fffbeb;
