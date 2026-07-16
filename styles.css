@@ -272,6 +272,12 @@ a:focus-visible {
   background: rgba(167, 139, 250, 0.24);
   border-color: rgba(167, 139, 250, 0.65);
 }
+.badge--rag {
+  --glow-rgb: 99, 102, 241;
+  color: #e0e7ff;
+  background: rgba(99, 102, 241, 0.22);
+  border-color: rgba(99, 102, 241, 0.65);
+}
 .badge--dataset {
   --glow-rgb: 34, 197, 166;
   color: #ecfeff;
