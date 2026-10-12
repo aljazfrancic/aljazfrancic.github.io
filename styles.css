@@ -278,6 +278,12 @@ a:focus-visible {
   background: rgba(99, 102, 241, 0.22);
   border-color: rgba(99, 102, 241, 0.65);
 }
+.badge--llm {
+  --glow-rgb: 217, 70, 239;
+  color: #fae8ff;
+  background: rgba(217, 70, 239, 0.2);
+  border-color: rgba(217, 70, 239, 0.6);
+}
 .badge--dataset {
   --glow-rgb: 34, 197, 166;
   color: #ecfeff;
