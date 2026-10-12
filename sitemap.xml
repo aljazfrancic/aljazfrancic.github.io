@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://aljazfrancic.github.io/</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-10-13</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aljazfrancic.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="sl" href="https://aljazfrancic.github.io/sl/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aljazfrancic.github.io/"/>
+  </url>
+  <url>
+    <loc>https://aljazfrancic.github.io/sl/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aljazfrancic.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="sl" href="https://aljazfrancic.github.io/sl/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aljazfrancic.github.io/"/>
   </url>
 </urlset>
