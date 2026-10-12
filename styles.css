@@ -17,6 +17,20 @@
   --shadow: 0 4px 24px light-dark(rgba(15, 20, 25, 0.1), rgba(0, 0, 0, 0.35));
 }
 
+/* --- Theme: follow the system; the switch flips it --- */
+/* --dark (0 or 1) mirrors the active scheme for the switch's thumb and glyphs. */
+:root { --dark: 0; }
+@media (prefers-color-scheme: dark) {
+  :root { --dark: 1; }
+}
+:root:has(#theme-toggle:checked) { color-scheme: dark; --dark: 1; }
+@media (prefers-color-scheme: dark) {
+  :root:has(#theme-toggle:checked) { color-scheme: light; --dark: 0; }
+}
+/* A saved choice, set by the script in <head> until the switch takes over. */
+:root[data-theme="light"] { color-scheme: light; --dark: 0; }
+:root[data-theme="dark"] { color-scheme: dark; --dark: 1; }
+
 /* --- Reset & base --- */
 *, *::before, *::after { box-sizing: border-box; }
 body {
@@ -32,7 +46,7 @@ body {
 main {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2rem 1.25rem 4rem;
+  padding: 1rem 1.25rem 4rem;
 }
 
 /* --- Typography --- */
@@ -62,10 +76,104 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
+/* --- Theme change: cross-fade colours instead of snapping --- */
+body, h2, .hero__avatar, .hero__tagline, .about p, .experience__meta, .education__list,
+.project-card__title, .project-card__desc, .badge {
+  transition: color 0.35s ease, background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* --- Controls: toggle switches --- */
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  animation: heroSlide 0.6s ease-out both;
+}
+.switch {
+  --switch-w: 3.5rem;
+  --switch-h: 2rem;
+  --thumb: 1.5rem;
+  --inset: calc((var(--switch-h) - var(--thumb)) / 2 - 1px); /* inside the 1px border */
+  --travel: calc(var(--switch-w) - var(--thumb) - 2 * var(--inset) - 2px);
+  position: relative;
+  display: block;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.switch__input {
+  /* Invisible but full-size: clicks, taps and screen readers all reach the real checkbox. */
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.switch__track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: var(--switch-w);
+  height: var(--switch-h);
+  padding: 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  transition: background-color 0.35s ease, border-color 0.2s ease;
+}
+.switch:hover .switch__track { border-color: var(--accent); }
+.switch__input:focus-visible ~ .switch__track {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.switch__icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+.switch:hover .switch__icon { color: var(--text); }
+.switch__thumb {
+  position: absolute;
+  top: var(--inset);
+  left: var(--inset);
+  display: grid;
+  place-items: center;
+  width: var(--thumb);
+  height: var(--thumb);
+  border-radius: 50%;
+  transform: translateX(calc(var(--dark) * var(--travel)));
+  transition: transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1),
+              background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+.switch--theme .switch__thumb {
+  background-color: light-dark(#f59e0b, #e2e8f0);
+  color: light-dark(#fffbeb, #1a2332);
+  box-shadow: 0 1px 3px rgba(15, 20, 25, 0.3),
+              0 0 12px light-dark(rgba(245, 158, 11, 0.6), rgba(226, 232, 240, 0.35));
+}
+.switch__glyph {
+  grid-area: 1 / 1;
+  width: 1rem;
+  height: 1rem;
+  transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.switch__glyph--sun {
+  opacity: calc(1 - var(--dark));
+  transform: rotate(calc(var(--dark) * 120deg)) scale(calc(1 - var(--dark) * 0.6));
+}
+.switch__glyph--moon {
+  opacity: var(--dark);
+  transform: rotate(calc((1 - var(--dark)) * -120deg)) scale(calc(0.4 + var(--dark) * 0.6));
+}
+
 /* --- Hero --- */
 .hero {
   text-align: center;
-  padding: 2rem 0 2.5rem;
+  padding: 1rem 0 2.5rem;
   animation: heroSlide 0.8s ease-out both;
 }
 .hero__avatar {
@@ -104,7 +212,7 @@ a:focus-visible {
   background: var(--bg-elevated);
   color: var(--text);
   border: 1px solid var(--border);
-  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, background-color 0.35s ease;
 }
 .hero__links-icon {
   width: 1.1em;
@@ -143,7 +251,7 @@ a:focus-visible {
   background: var(--bg-elevated);
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.35s ease;
 }
 .experience__item:hover {
   border-color: light-dark(rgba(180, 83, 9, 0.35), rgba(245, 158, 11, 0.3));
@@ -181,7 +289,7 @@ a:focus-visible {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: inherit;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.35s ease;
 }
 .project-card:hover {
   transform: translateY(-4px);
@@ -310,8 +418,8 @@ a:focus-visible {
 
 /* --- Responsive --- */
 @media (max-width: 40em) {        /* was 640px */
-  main { padding: 1.5rem 1rem 3rem; }
-  .hero { padding: 1.5rem 0 2rem; }
+  main { padding: 1rem 1rem 3rem; }
+  .hero { padding: 0.5rem 0 2rem; }
   .hero__avatar { width: 7.5rem; height: 7.5rem; margin-bottom: 1rem; } /* was 120px */
   .projects__grid {
     grid-template-columns: 1fr;
@@ -326,6 +434,7 @@ a:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero, .hero__avatar, .hero__name, .hero__tagline, .hero__links,
+  .controls, .hero, .hero__avatar, .hero__name, .hero__tagline, .hero__links,
   .about, .experience, .education, .projects { animation: none; }
+  .switch__thumb, .switch__glyph { transition: none; }
 }
