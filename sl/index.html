@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aljaž Frančič</title>
+  <meta name="description" content="Aljaž Frančič — doktor računalništva in informatike, inženir in raziskovalec. Samostojne raziskave strojnega učenja; prej razvoj programske opreme za razvojni komplet za zajem podatkov openDAQ in raziskave strojnega učenja na elektromiografskih podatkih.">
+  <meta name="author" content="Aljaž Frančič">
+  <meta name="theme-color" content="#f5f7fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Aljaž Frančič">
+  <meta property="og:locale" content="sl_SI">
+  <meta property="og:locale:alternate" content="en_GB">
+  <meta property="og:title" content="Aljaž Frančič">
+  <meta property="og:description" content="Doktor računalništva in informatike · Inženir in raziskovalec. Samostojne raziskave strojnega učenja; prej razvoj kompleta openDAQ in raziskave elektromiografije s strojnim učenjem.">
+  <meta property="og:url" content="https://aljazfrancic.github.io/sl/">
+  <meta property="og:image" content="https://aljazfrancic.github.io/assets/avatar.jpg?v=20260605">
+  <meta property="og:image:alt" content="Portret Aljaža Frančiča">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Aljaž Frančič">
+  <meta name="twitter:description" content="Doktor računalništva in informatike · Inženir in raziskovalec. Samostojne raziskave strojnega učenja; prej razvoj kompleta openDAQ in raziskave elektromiografije s strojnim učenjem.">
+  <meta name="twitter:image" content="https://aljazfrancic.github.io/assets/avatar.jpg?v=20260605">
+  <meta name="twitter:image:alt" content="Portret Aljaža Frančiča">
+  <link rel="canonical" href="https://aljazfrancic.github.io/sl/">
+  <link rel="alternate" hreflang="en" href="https://aljazfrancic.github.io/">
+  <link rel="alternate" hreflang="sl" href="https://aljazfrancic.github.io/sl/">
+  <link rel="alternate" hreflang="x-default" href="https://aljazfrancic.github.io/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aljaž Frančič",
+    "url": "https://aljazfrancic.github.io/sl/",
+    "image": "https://aljazfrancic.github.io/assets/avatar.jpg?v=20260605",
+    "jobTitle": "Inženir in raziskovalec",
+    "description": "Doktor računalništva in informatike, inženir in raziskovalec. Samostojne raziskave strojnega učenja; prej razvoj programske opreme za razvojni komplet za zajem podatkov openDAQ in raziskave strojnega učenja na elektromiografskih podatkih.",
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Univerza v Mariboru, Fakulteta za elektrotehniko, računalništvo in informatiko",
+      "url": "https://feri.um.si/"
+    },
+    "knowsAbout": ["Strojno učenje", "Mehanistična interpretabilnost", "Generiranje, obogateno s pridobivanjem", "Programsko inženirstvo", "Zajem podatkov", "Elektromiografija", "Računalniški vid", "C++", "Python", "PyTorch", "Kotlin", "Android"],
+    "sameAs": [
+      "https://github.com/aljazfrancic",
+      "https://www.linkedin.com/in/aljazfrancic",
+      "https://orcid.org/0000-0003-4431-2869",
+      "https://cris.cobiss.net/ecris/si/sl/researcher/code/52032"
+    ]
+  }
+  </script>
+  <script>
+    // Theme: re-apply a saved choice before first paint; the switch's script takes over from there.
+    try { const saved = localStorage.getItem("theme"); if (saved) document.documentElement.dataset.theme = saved; } catch {}
+  </script>
+  <link rel="icon" href="../favicon.svg?v=20260414" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&amp;family=Outfit:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=20261013c">
+</head>
+<body>
+  <main>
+    <div class="controls">
+      <a class="switch switch--lang switch--end" href="../" hreflang="en" lang="en" title="English" aria-label="English">
+        <span class="switch__track" aria-hidden="true">
+          <img class="switch__icon switch__flag" src="../assets/flags/gb.svg" alt="" width="16" height="16">
+          <img class="switch__icon switch__flag" src="../assets/flags/si.svg" alt="" width="16" height="16">
+          <span class="switch__thumb"><img class="switch__flag" src="../assets/flags/si.svg" alt="" width="24" height="24"></span>
+        </span>
+      </a>
+      <label class="switch switch--theme" title="Preklopi barvno temo">
+        <input class="switch__input" type="checkbox" role="switch" id="theme-toggle" autocomplete="off" aria-label="Preklopi barvno temo">
+        <script>
+          // Remember the switch: store a choice that differs from the system, forget one that matches.
+          (() => {
+            const box = document.getElementById("theme-toggle");
+            const systemDark = matchMedia("(prefers-color-scheme: dark)");
+            const saved = () => { try { return localStorage.getItem("theme"); } catch { return null; } };
+            const sync = () => {
+              box.checked = saved() !== null && (saved() === "dark") !== systemDark.matches;
+              delete document.documentElement.dataset.theme;
+            };
+            box.addEventListener("change", () => {
+              try { box.checked ? localStorage.setItem("theme", systemDark.matches ? "light" : "dark") : localStorage.removeItem("theme"); } catch {}
+            });
+            systemDark.addEventListener("change", sync);
+            addEventListener("pageshow", sync);
+            sync();
+          })();
+        </script>
+        <span class="switch__track" aria-hidden="true">
+          <svg class="switch__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.25" fill="currentColor" stroke="none"/><path d="M12 2.75v2.5M12 18.75v2.5M2.75 12h2.5M18.75 12h2.5M5.46 5.46l1.77 1.77M16.77 16.77l1.77 1.77M5.46 18.54l1.77-1.77M16.77 7.23l1.77-1.77"/></svg>
+          <svg class="switch__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19.9 13.81A8.5 8.5 0 1 1 10.19 4.1 7 7 0 0 0 19.9 13.81Z"/></svg>
+          <span class="switch__thumb">
+            <svg class="switch__glyph switch__glyph--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.25" fill="currentColor" stroke="none"/><path d="M12 2.75v2.5M12 18.75v2.5M2.75 12h2.5M18.75 12h2.5M5.46 5.46l1.77 1.77M16.77 16.77l1.77 1.77M5.46 18.54l1.77-1.77M16.77 7.23l1.77-1.77"/></svg>
+            <svg class="switch__glyph switch__glyph--moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19.9 13.81A8.5 8.5 0 1 1 10.19 4.1 7 7 0 0 0 19.9 13.81Z"/></svg>
+          </span>
+        </span>
+      </label>
+    </div>
+    <header class="hero">
+      <img src="../assets/avatar.jpg?v=20260605" alt="Portret Aljaža Frančiča" class="hero__avatar" width="160" height="160" fetchpriority="high">
+      <h1 class="hero__name">Aljaž Frančič</h1>
+      <p class="hero__tagline">Doktor računalništva in informatike · Inženir&nbsp;in&nbsp;raziskovalec</p>
+      <nav class="hero__links">
+        <a href="https://github.com/aljazfrancic" rel="noopener noreferrer" target="_blank">
+          <svg class="hero__links-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          <span>GitHub</span>
+        </a>
+        <a href="https://www.linkedin.com/in/aljazfrancic" rel="noopener noreferrer" target="_blank">
+          <svg class="hero__links-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+          <span>LinkedIn</span>
+        </a>
+        <a href="mailto:aljaz.francic@gmail.com">
+          <svg class="hero__links-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"/><path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"/></svg>
+          <span>aljaz.francic@gmail.com</span>
+        </a>
+      </nav>
+    </header>
+
+    <section class="about">
+      <h2>O meni</h2>
+      <p>Sem snovalec z dobrim okusom: ideje pripeljem vse do delujočih sistemov in vem, kaj izpustiti. Pri problemih vztrajam, dokler ne popustijo, veliko berem tudi izven inženirskega kanona, svoje napake pa raje odkrijem sam, preden jih kdo drug.</p>
+    </section>
+
+    <section class="experience">
+      <h2>Izkušnje</h2>
+      <article class="experience__item">
+        <h3>Samostojni raziskovalec</h3>
+        <p class="experience__meta">jan. 2026 – danes</p>
+        <p class="experience__employer">Strojno učenje in mehanistična interpretabilnost</p>
+        <p>Zasnoval in izvedel sem vnaprej registrirano študijo medslojne dinamike pri priklicu dejstev v transformerjih na šestih jezikovnih modelih iz treh družin, v celoti na potrošniški strojni opremi. Vsa koda bo javno dostopna, ko bo članek objavljen. Izvedel sem tudi študijo pojava grokking (zakasnjene generalizacije) na nevronskih mrežah za prepoznavo kretenj iz elektromiografskih podatkov.</p>
+        <p>Članek: povezava sledi</p>
+        <p><a href="https://github.com/aljazfrancic/myo-keras" rel="noopener noreferrer" target="_blank">Študija grokkinga</a></p>
+      </article>
+      <article class="experience__item">
+        <h3>Programski inženir</h3>
+        <p class="experience__meta">jan. 2024 – jan. 2026</p>
+        <p class="experience__employer"><a href="https://opendaq.com/" rel="noopener noreferrer" target="_blank">openDAQ</a> pod okriljem podjetij <a href="https://dewesoft.com/" rel="noopener noreferrer" target="_blank">Dewesoft</a> in <a href="https://www.hbkworld.com/" rel="noopener noreferrer" target="_blank">Hottinger Brüel &amp; Kjær</a></p>
+        <p>Soustvarjal sem odprtokodni razvojni komplet za zajem podatkov, ki omogoča interoperabilnost strojne opreme med operacijskimi sistemi, programskimi jeziki in proizvajalci naprav. Implementiral sem ključne funkcionalnosti v C++ ter skrbel za dokumentacijo, CI/CD, izdaje, testiranje, vezave za Python in nadzorne plošče z metrikami (Grafana/InfluxDB na AWS).</p>
+        <p><a href="https://github.com/openDAQ/openDAQ" rel="noopener noreferrer" target="_blank">github.com/openDAQ/openDAQ</a></p>
+      </article>
+      <article class="experience__item">
+        <h3>Mladi raziskovalec, asistent</h3>
+        <p class="experience__meta">okt. 2018 – okt. 2022</p>
+        <p class="experience__employer"><a href="https://www.um.si/" rel="noopener noreferrer" target="_blank">Univerza v Mariboru</a>, <a href="https://feri.um.si/" rel="noopener noreferrer" target="_blank">Fakulteta za elektrotehniko, računalništvo in informatiko</a>, <a href="https://lspo.feri.um.si/index.php" rel="noopener noreferrer" target="_blank">Laboratorij za sistemsko programsko opremo</a></p>
+        <p>Vodil sem raziskave na področju elektromiografije in pedagoško delo. Razvil sem celovite cevovode za analizo signalov (MATLAB, R) in modele strojnega učenja za biosignale (Python, TensorFlow, Keras) ter poučeval računalniški vid (OpenCV). Mentoriral sem študente in soprispeval k recenziranim objavam.</p>
+        <p>Najbolj citiran članek: <a href="https://ieeexplore.ieee.org/abstract/document/9513317" rel="noopener noreferrer" target="_blank">On the reuse of motor unit filters in high density surface electromyograms recorded at different contraction levels</a></p>
+        <p>Bibliografija: <a href="https://cris.cobiss.net/ecris/si/sl/researcher/code/52032" rel="noopener noreferrer" target="_blank">profil raziskovalca v sistemu COBISS</a></p>
+      </article>
+    </section>
+
+    <section class="education">
+      <h2>Izobrazba</h2>
+      <p class="education__institution"><a href="https://www.um.si/" rel="noopener noreferrer" target="_blank">Univerza v Mariboru</a>, <a href="https://feri.um.si/" rel="noopener noreferrer" target="_blank">Fakulteta za elektrotehniko, računalništvo in informatiko</a></p>
+      <ul class="education__list">
+        <li><strong>2023:</strong> doktorat, Računalništvo in informatika — <a href="https://dk.um.si/IzpisGradiva.php?lang=slv&amp;id=84908" rel="noopener noreferrer" target="_blank">Programski cevovod za računsko učinkovito in robustno ocenjevanje prožilnih trenutkov motoričnih enot iz večkanalnih površinskih elektromiogramov</a></li>
+        <li><strong>2018:</strong> magisterij, Računalništvo in informacijske tehnologije — <a href="https://dk.um.si/IzpisGradiva.php?lang=slv&amp;id=71712" rel="noopener noreferrer" target="_blank">Krmiljenje robota z nevronsko mrežo in vmesnikom mišice-stroj</a></li>
+        <li><strong>2015:</strong> študentska izmenjava Erasmus+ na Univerzi v Tamperah, Finska</li>
+      </ul>
+    </section>
+
+    <section class="projects">
+      <h2>Projekti</h2>
+      <div class="projects__grid">
+        <a href="https://github.com/aljazfrancic/myo-readings-dataset" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">myo-readings-dataset</h3>
+          <p class="project-card__tech">
+            <span class="badge badge--lang">Python</span>
+            <span class="badge badge--ml">Strojno učenje</span>
+            <span class="badge badge--emg">Elektromiografija</span>
+            <span class="badge badge--dataset">Nabor podatkov</span>
+          </p>
+          <p class="project-card__desc">Zbirka elektromiografskih signalov različnih kretenj roke, posnetih z zapestnico Myo, za strojno učenje.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/myo-keras" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">myo-keras</h3>
+          <p class="project-card__tech">
+            <span class="badge badge--lang">Python</span>
+            <span class="badge badge--ml">Strojno učenje</span>
+            <span class="badge badge--emg">Elektromiografija</span>
+          </p>
+          <p class="project-card__desc">Razvrščanje kretenj iz elektromiografskih podatkov zapestnice Myo in poglobljena raziskava, kako doseči grokking na resničnem fiziološkem signalu.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/ev3-myo" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">ev3-myo</h3>
+          <p class="project-card__tech">
+            <span class="badge badge--lang">Java</span>
+            <span class="badge badge--lang">Python</span>
+            <span class="badge badge--ml">Strojno učenje</span>
+            <span class="badge badge--emg">Elektromiografija</span>
+            <span class="badge badge--lego">LEGO</span>
+          </p>
+          <p class="project-card__desc">Krmiljenje robota LEGO Mindstorms EV3 TRACK3R z zapestnico Myo in nevronsko mrežo za prepoznavo kretenj.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/local-rag" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">local-rag</h3>
+          <p class="project-card__tech">
+            <span class="badge badge--lang">Python</span>
+            <span class="badge badge--ml">Strojno učenje</span>
+            <span class="badge badge--llm">LLM</span>
+            <span class="badge badge--rag">RAG</span>
+          </p>
+          <p class="project-card__desc">Lokalni cevovod RAG nad slovenskimi dokumenti — Ollama + ChromaDB, brez ogrodij. Vsak korak je ekspliciten in berljiv.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/funding-extract" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">funding-extract</h3>
+          <p class="project-card__tech">
+            <span class="badge badge--lang">Python</span>
+            <span class="badge badge--ml">Strojno učenje</span>
+            <span class="badge badge--llm">LLM</span>
+          </p>
+          <p class="project-card__desc">Kam v cevovodu za izločanje podatkov s spleta v resnici sodi LLM? Kaskada pravila&nbsp;→ klasifikator&nbsp;→ LLM nad novicami o investicijskih krogih, s strogim preverjanjem ujemanja z virom in evalvacijami.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/sudoku-solver" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">sudoku-solver</h3>
+          <p class="project-card__tech"><span class="badge badge--lang">Python</span><span class="badge badge--cv">Računalniški vid</span></p>
+          <p class="project-card__desc">Računalniški vid: najde sudoku na fotografiji, izlušči mrežo, prepozna števke, ga reši in rešitev izriše na sliko.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/weight-logger" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">weight-logger</h3>
+          <p class="project-card__tech"><span class="badge badge--lang">Kotlin</span><span class="badge badge--android">Android</span></p>
+          <p class="project-card__desc">Aplikacija za Android za beleženje in spremljanje telesne teže skozi čas.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/stonks-bot" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">stonks-bot</h3>
+          <p class="project-card__tech"><span class="badge badge--lang">Python</span><span class="badge badge--live">Grafi v živo</span></p>
+          <p class="project-card__desc">Discord bot, ki pridobi zaključne cene kriptovalut in delnic ter jih prikaže na grafu za zadnjih N dni.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/slo-tech-monitor" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">slo-tech-monitor</h3>
+          <p class="project-card__tech"><span class="badge badge--lang">Python</span><span class="badge badge--monitor">Spremljanje</span></p>
+          <p class="project-card__desc">Spremljanje novih zaposlitvenih oglasov na slo-tech.com/delo.</p>
+        </a>
+        <a href="https://github.com/aljazfrancic/8d-audio-homebrew" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">8d-audio-homebrew</h3>
+          <p class="project-card__tech"><span class="badge badge--lang">Python</span><span class="badge badge--audio">Zvok</span></p>
+          <p class="project-card__desc">Pretvori običajno datoteko wav v datoteko wav z 8d zvokom.</p>
+        </a>
+        <a href="https://aljazfrancic.github.io/live-webcam-ascii-art" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">live-webcam-ascii-art</h3>
+          <p class="project-card__tech"><span class="badge badge--lang">JavaScript</span><span class="badge badge--fun">Za zabavo</span></p>
+          <p class="project-card__desc">Slika s spletne kamere, v realnem času pretvorjena v ASCII-umetnost; teče v celoti v brskalniku, brez odvisnosti.</p>
+        </a>
+        <a href="https://aljazfrancic.github.io/generative-art-gallery" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">generative-art-gallery</h3>
+          <p class="project-card__tech"><span class="badge badge--lang">JavaScript</span><span class="badge badge--fun">Za zabavo</span></p>
+          <p class="project-card__desc">Interaktivna galerija generativne umetnosti, zgrajena z Vite.</p>
+        </a>
+        <a href="https://github.com/openDAQ/openDAQ" class="project-card" rel="noopener noreferrer" target="_blank">
+          <h3 class="project-card__title">openDAQ</h3>
+          <p class="project-card__tech">
+            <span class="badge badge--lang">C++</span>
+            <span class="badge badge--lang">Python</span>
+            <span class="badge badge--lang">C#</span>
+            <span class="badge badge--sdk">SDK</span>
+          </p>
+          <p class="project-card__desc">openDAQ™, razvojni komplet za zajem podatkov — medplatformska in večjezična interoperabilnost naprav za zajem podatkov.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
