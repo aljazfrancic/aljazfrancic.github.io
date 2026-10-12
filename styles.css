@@ -1,27 +1,24 @@
 /* --- Variables: deep blue + amber/teal palette --- */
+/* Colours are light-dark(light, dark) pairs; color-scheme picks the side. */
 :root {
-  --bg: #0f1419;
-  --bg-elevated: #1a2332;
-  --text: #e6edf3;
-  --text-muted: #8b9eb5;
-  --accent: #f59e0b;
-  --accent-hover: #fbbf24;
-  --teal: #2dd4bf;
-  --purple-ink: #e9e2ff;
-  --red-ink: #ffe4e6;
-  --red-bg: rgba(248, 113, 113, 0.14);
-  --red-border: rgba(248, 113, 113, 0.35);
-  --border: #2d3a4a;
+  color-scheme: light dark;
+  --bg: light-dark(#f5f7fa, #0f1419);
+  --bg-elevated: light-dark(#ffffff, #1a2332);
+  --text: light-dark(#0f1419, #e6edf3);
+  --text-muted: light-dark(#52627a, #8b9eb5);
+  --accent: light-dark(#b45309, #f59e0b);
+  --accent-hover: light-dark(#92400e, #fbbf24);
+  --teal: light-dark(#0f766e, #2dd4bf);
+  --border: light-dark(#d9e0e8, #2d3a4a);
   --max-width: 42rem;
   --font-sans: "DM Sans", system-ui, sans-serif;
   --font-display: "Outfit", system-ui, sans-serif;
   --radius: 0.5rem;
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow: 0 4px 24px light-dark(rgba(15, 20, 25, 0.1), rgba(0, 0, 0, 0.35));
 }
 
 /* --- Reset & base --- */
 *, *::before, *::after { box-sizing: border-box; }
-html { color-scheme: dark; }
 body {
   margin: 0;
   font-family: var(--font-sans);
@@ -149,8 +146,8 @@ a:focus-visible {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .experience__item:hover {
-  border-color: rgba(245, 158, 11, 0.3);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  border-color: light-dark(rgba(180, 83, 9, 0.35), rgba(245, 158, 11, 0.3));
+  box-shadow: 0 4px 20px light-dark(rgba(15, 20, 25, 0.08), rgba(0, 0, 0, 0.25));
 }
 .experience__meta {
   font-size: 0.9rem;
@@ -188,8 +185,8 @@ a:focus-visible {
 }
 .project-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(45, 212, 191, 0.5);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+  border-color: light-dark(rgba(13, 148, 136, 0.5), rgba(45, 212, 191, 0.5));
+  box-shadow: 0 8px 28px light-dark(rgba(15, 20, 25, 0.1), rgba(0, 0, 0, 0.3));
 }
 .project-card__title { color: var(--text); }
 .project-card__tech {
@@ -208,6 +205,7 @@ a:focus-visible {
 }
 
 /* --- Badges --- */
+/* Each colour is light-dark(light, dark): deep ink on a pale tint in light mode. */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -222,91 +220,92 @@ a:focus-visible {
   white-space: nowrap;
   /* Uniform glow: same geometry + opacity for every badge, tinted per-hue. */
   box-shadow: 0 0 0 1px rgba(var(--glow-rgb, 148, 163, 184), 0.14),
-              0 8px 20px rgba(var(--glow-rgb, 148, 163, 184), 0.17);
+              0 8px 20px light-dark(rgba(var(--glow-rgb, 148, 163, 184), 0.12),
+                                    rgba(var(--glow-rgb, 148, 163, 184), 0.17));
 }
 .badge--fun {
   --glow-rgb: 236, 72, 153;
-  color: #ffe4f5;
-  background: rgba(236, 72, 153, 0.3);
-  border-color: rgba(236, 72, 153, 0.7);
+  color: light-dark(#9d174d, #ffe4f5);
+  background: light-dark(rgba(236, 72, 153, 0.12), rgba(236, 72, 153, 0.3));
+  border-color: light-dark(rgba(236, 72, 153, 0.5), rgba(236, 72, 153, 0.7));
 }
 .badge--lang {
   --glow-rgb: 148, 163, 184;
-  color: #e5f0ff;
-  background: rgba(148, 163, 184, 0.28);
-  border-color: rgba(148, 163, 184, 0.7);
+  color: light-dark(#334155, #e5f0ff);
+  background: light-dark(rgba(148, 163, 184, 0.2), rgba(148, 163, 184, 0.28));
+  border-color: light-dark(rgba(100, 116, 139, 0.45), rgba(148, 163, 184, 0.7));
 }
 .badge--live {
   --glow-rgb: 248, 113, 113;
-  color: var(--red-ink);
-  background: var(--red-bg);
-  border-color: var(--red-border);
+  color: light-dark(#9f1239, #ffe4e6);
+  background: light-dark(rgba(248, 113, 113, 0.14), rgba(248, 113, 113, 0.14));
+  border-color: light-dark(rgba(239, 68, 68, 0.45), rgba(248, 113, 113, 0.35));
 }
 .badge--monitor {
   --glow-rgb: 34, 211, 238;
-  color: #ecfeff;
-  background: rgba(34, 211, 238, 0.18);
-  border-color: rgba(34, 211, 238, 0.6);
+  color: light-dark(#155e75, #ecfeff);
+  background: light-dark(rgba(34, 211, 238, 0.14), rgba(34, 211, 238, 0.18));
+  border-color: light-dark(rgba(6, 182, 212, 0.55), rgba(34, 211, 238, 0.6));
 }
 .badge--ml {
   --glow-rgb: 245, 158, 11;
-  color: #fffbeb;
-  background: rgba(245, 158, 11, 0.18);
-  border-color: rgba(245, 158, 11, 0.5);
+  color: light-dark(#92400e, #fffbeb);
+  background: light-dark(rgba(245, 158, 11, 0.14), rgba(245, 158, 11, 0.18));
+  border-color: light-dark(rgba(245, 158, 11, 0.55), rgba(245, 158, 11, 0.5));
 }
 .badge--audio {
   --glow-rgb: 59, 130, 246;
-  color: #e0f2fe;
-  background: rgba(59, 130, 246, 0.18);
-  border-color: rgba(59, 130, 246, 0.55);
+  color: light-dark(#1e40af, #e0f2fe);
+  background: light-dark(rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.18));
+  border-color: light-dark(rgba(59, 130, 246, 0.45), rgba(59, 130, 246, 0.55));
 }
 .badge--cv {
   --glow-rgb: 132, 204, 22;
-  color: #ecfeff;
-  background: rgba(190, 242, 100, 0.30);
-  border-color: rgba(132, 204, 22, 0.85);
+  color: light-dark(#3f6212, #ecfeff);
+  background: light-dark(rgba(132, 204, 22, 0.16), rgba(190, 242, 100, 0.30));
+  border-color: light-dark(rgba(101, 163, 13, 0.55), rgba(132, 204, 22, 0.85));
 }
 .badge--emg {
   --glow-rgb: 167, 139, 250;
-  color: var(--purple-ink);
-  background: rgba(167, 139, 250, 0.24);
-  border-color: rgba(167, 139, 250, 0.65);
+  color: light-dark(#5b21b6, #e9e2ff);
+  background: light-dark(rgba(167, 139, 250, 0.16), rgba(167, 139, 250, 0.24));
+  border-color: light-dark(rgba(139, 92, 246, 0.45), rgba(167, 139, 250, 0.65));
 }
 .badge--rag {
   --glow-rgb: 99, 102, 241;
-  color: #e0e7ff;
-  background: rgba(99, 102, 241, 0.22);
-  border-color: rgba(99, 102, 241, 0.65);
+  color: light-dark(#3730a3, #e0e7ff);
+  background: light-dark(rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.22));
+  border-color: light-dark(rgba(99, 102, 241, 0.45), rgba(99, 102, 241, 0.65));
 }
 .badge--llm {
   --glow-rgb: 217, 70, 239;
-  color: #fae8ff;
-  background: rgba(217, 70, 239, 0.2);
-  border-color: rgba(217, 70, 239, 0.6);
+  color: light-dark(#86198f, #fae8ff);
+  background: light-dark(rgba(217, 70, 239, 0.1), rgba(217, 70, 239, 0.2));
+  border-color: light-dark(rgba(217, 70, 239, 0.45), rgba(217, 70, 239, 0.6));
 }
 .badge--dataset {
   --glow-rgb: 34, 197, 166;
-  color: #ecfeff;
-  background: rgba(45, 212, 191, 0.18);
-  border-color: rgba(34, 197, 166, 0.65);
+  color: light-dark(#115e59, #ecfeff);
+  background: light-dark(rgba(45, 212, 191, 0.16), rgba(45, 212, 191, 0.18));
+  border-color: light-dark(rgba(20, 184, 166, 0.55), rgba(34, 197, 166, 0.65));
 }
 .badge--lego {
   --glow-rgb: 239, 68, 68;
-  color: #fef3c7;
-  background: rgba(239, 68, 68, 0.26);
-  border-color: rgba(239, 68, 68, 0.7);
+  color: light-dark(#991b1b, #fef3c7);
+  background: light-dark(rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.26));
+  border-color: light-dark(rgba(239, 68, 68, 0.5), rgba(239, 68, 68, 0.7));
 }
 .badge--sdk {
   --glow-rgb: 249, 115, 22;
-  color: #ffedd5;
-  background: rgba(249, 115, 22, 0.2);
-  border-color: rgba(249, 115, 22, 0.6);
+  color: light-dark(#9a3412, #ffedd5);
+  background: light-dark(rgba(249, 115, 22, 0.12), rgba(249, 115, 22, 0.2));
+  border-color: light-dark(rgba(249, 115, 22, 0.5), rgba(249, 115, 22, 0.6));
 }
 .badge--android {
   --glow-rgb: 61, 220, 132;
-  color: #d7f7e6;
-  background: rgba(61, 220, 132, 0.18);
-  border-color: rgba(61, 220, 132, 0.6);
+  color: light-dark(#166534, #d7f7e6);
+  background: light-dark(rgba(61, 220, 132, 0.16), rgba(61, 220, 132, 0.18));
+  border-color: light-dark(rgba(34, 197, 94, 0.5), rgba(61, 220, 132, 0.6));
 }
 
 /* --- Responsive --- */
