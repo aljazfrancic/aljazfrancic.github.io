@@ -58,7 +58,8 @@
   </script>
   <script>
     // Theme: re-apply a saved choice before first paint; the switch's script takes over from there.
-    try { const saved = localStorage.getItem("theme"); if (saved) document.documentElement.dataset.theme = saved; } catch {}
+    // Key "home-theme", not "theme": the project sites under this origin share its localStorage.
+    try { const saved = localStorage.getItem("home-theme"); if (saved) document.documentElement.dataset.theme = saved; } catch {}
   </script>
   <link rel="icon" href="../favicon.svg?v=20260414" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -83,13 +84,13 @@
           (() => {
             const box = document.getElementById("theme-toggle");
             const systemDark = matchMedia("(prefers-color-scheme: dark)");
-            const saved = () => { try { return localStorage.getItem("theme"); } catch { return null; } };
+            const saved = () => { try { return localStorage.getItem("home-theme"); } catch { return null; } };
             const sync = () => {
               box.checked = saved() !== null && (saved() === "dark") !== systemDark.matches;
               delete document.documentElement.dataset.theme;
             };
             box.addEventListener("change", () => {
-              try { box.checked ? localStorage.setItem("theme", systemDark.matches ? "light" : "dark") : localStorage.removeItem("theme"); } catch {}
+              try { box.checked ? localStorage.setItem("home-theme", systemDark.matches ? "light" : "dark") : localStorage.removeItem("home-theme"); } catch {}
             });
             systemDark.addEventListener("change", sync);
             addEventListener("pageshow", sync);
