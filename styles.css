@@ -33,6 +33,8 @@
 
 /* --- Reset & base --- */
 *, *::before, *::after { box-sizing: border-box; }
+/* Chrome restores the scroll on reload via an on-screen element; mid entrance slide it sits lower, so it overshot. */
+html { overflow-anchor: none; }
 body {
   margin: 0;
   font-family: var(--font-sans);
