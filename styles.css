@@ -699,8 +699,9 @@ h2::before {
 
 /* --- Print: a plain one-colour CV --- */
 @media print {
-  /* !important: a flipped theme switch (:root:has(...)) would otherwise print dark. */
-  :root { color-scheme: light !important; }
+  /* !important: a flipped theme switch (:root:has(...)) would otherwise print dark, and
+     --dark would still dim the previews. */
+  :root { color-scheme: light !important; --dark: 0 !important; }
   body::before, .backdrop, .skip, .controls, .toc, .footer { display: none; }
   .page { display: block; max-width: none; padding: 0; }
   .intro { position: static; min-height: 0; animation: none; }
