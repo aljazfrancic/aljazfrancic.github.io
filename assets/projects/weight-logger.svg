@@ -1,36 +1,10 @@
-<svg
-   viewBox="0 0 360 240"
-   width="360"
-   height="240"
-  
-  
-   xmlns="http://www.w3.org/2000/svg"
-  ><rect
-     width="360"
-     height="240"
-     fill="#1976D2"
-     /><g
-     transform="translate(66.6 6.6) scale(2.1)"
-    ><path
-       d="M36 59C41 48 48 40 54 40C60 40 65 52 72 68"
-       fill="none"
-       stroke="#fff"
-       stroke-width="4"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       /><circle
-       cx="36"
-       cy="59"
-       r="5"
-       fill="#fff"
-       /><circle
-       cx="54"
-       cy="40"
-       r="5"
-       fill="#fff"
-       /><circle
-       cx="72"
-       cy="68"
-       r="5"
-       fill="#fff"
-       /></g></svg>
+<svg viewBox="0 0 360 240" width="360" height="240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="240" fill="#111821"/>
+  <rect x="100" y="40" width="160" height="160" rx="40" fill="#1a2430" stroke="#2d3a4a" stroke-width="1.2"/>
+  <g transform="translate(77.4 17.4) scale(1.9)">
+    <path d="M36 59C41 48 48 40 54 40C60 40 65 52 72 68" fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="36" cy="59" r="5" fill="#2dd4bf"/>
+    <circle cx="54" cy="40" r="5" fill="#2dd4bf"/>
+    <circle cx="72" cy="68" r="5" fill="#2dd4bf"/>
+  </g>
+</svg>
