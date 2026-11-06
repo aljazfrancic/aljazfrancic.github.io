@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="6" fill="#0f1419"/>
-  <text x="16" y="24" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="700" fill="#2dd4bf" text-anchor="middle">Σ</text>
+  <!-- Σ from Noto Sans Bold, as an outline so it looks the same on every system -->
+  <path fill="#2dd4bf" d="M9.61 25.28v-3.09l5.98-6.63-5.83-5.83V6.72H22.4v3.22h-5.59q-.73 0-1.43-.03-.7-.03-1.43-.1l5.77 5.72-6.06 6.66q1.79-.16 3.59-.16h5.9v3.25Z"/>
 </svg>
