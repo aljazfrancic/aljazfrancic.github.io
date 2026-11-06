@@ -224,7 +224,7 @@
 
   // Size the canvas to its box, drawn upside down. Its CSS height is the large viewport, so a
   // phone's address bar sliding in and out doesn't resize it. Big or dense screens get fewer
-  // device pixels.
+  // device pixels, down to one per CSS pixel, or the screen's own when zoomed out.
   let dprCap = 1.5;
   const fit = () => {
     const box = canvas.getBoundingClientRect();
@@ -232,7 +232,7 @@
     h = box.height;
     if (w < 1 || h < 1) return;
     let dpr = Math.min(window.devicePixelRatio || 1, dprCap);
-    if (w * h * dpr * dpr > 0.9e6) dpr = Math.max(1, Math.sqrt(0.9e6 / (w * h)));
+    if (w * h * dpr * dpr > 0.9e6) dpr = Math.max(Math.min(1, dpr), Math.sqrt(0.9e6 / (w * h)));
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
     ctx.setTransform(canvas.width / w, 0, 0, -canvas.height / h, 0, canvas.height);
