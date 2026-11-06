@@ -88,6 +88,7 @@
   --hairline: light-dark(#dfe5ec, #212c3a);
   --art-low: light-dark(#9fb0c4, #3e5570); /* backdrop terrain, valleys to peaks */
   --art-high: light-dark(#0f766e, #2dd4bf);
+  --grain: light-dark(rgba(15, 20, 25, 0.055), rgba(230, 237, 243, 0.045)); /* background noise */
   --font-sans: "DM Sans", system-ui, sans-serif;
   --font-mono: "DM Mono", ui-monospace, monospace;
   --radius: 0.75rem;
@@ -119,6 +120,7 @@ html {
   scrollbar-color: var(--border) transparent;
 }
 body {
+  position: relative; /* the grain spans the whole page */
   margin: 0;
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -162,6 +164,19 @@ body::before {
   mask-image: radial-gradient(ellipse 120% 100% at 0% 0%, #000 25%, rgba(0, 0, 0, 0.35) 90%);
 }
 body:has(> .backdrop)::before { display: none; }
+/* Grain: fine noise over the whole page background, scrolling with it, above the terrain and
+   below the content. The noise is only a mask; the colour comes from --grain, so it follows
+   the theme. */
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--grain);
+  transition: background-color var(--fade);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3.2 0 0 0 -1.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 240px 240px repeat;
+}
 .backdrop {
   position: absolute;
   top: 0;
@@ -706,14 +721,14 @@ h2::before {
 
 /* High-contrast modes: no decoration behind the text. */
 @media (forced-colors: active) {
-  .backdrop { display: none; }
+  .backdrop, body::after { display: none; }
 }
 
 /* --- Print: a plain one-colour CV --- */
 @media print {
   /* !important: a flipped theme switch (:root:has(...)) would otherwise print dark. */
   :root { color-scheme: light !important; }
-  body::before, .backdrop, .skip, .controls, .toc, .footer { display: none; }
+  body::before, body::after, .backdrop, .skip, .controls, .toc, .footer { display: none; }
   .page { display: block; max-width: none; padding: 0; }
   .intro { position: static; height: auto; margin: 0; padding: 0; overflow: visible; animation: none; }
   main { padding-top: 1.5rem; }
