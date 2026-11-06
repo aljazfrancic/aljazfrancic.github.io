@@ -236,12 +236,51 @@ body::after {
   object-fit: cover;
   box-shadow: var(--shadow);
 }
+/* The name, typed out in mono by a block cursor in the headings' accent, which stays after it.
+   Each line is clipped to a whole number of characters (--chars, set in the HTML), so a
+   steps() animation of its width reveals one character at a time; the cursor, the line's
+   ::after, follows the edge. The first cursor pulses as if thinking, types the first name and
+   goes; the second takes over on the next line, types the surname and keeps blinking. */
 .intro__name {
-  font-weight: 650;
-  font-size: clamp(2rem, 1.6rem + 1.5vw, 2.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.035em;
+  --track: -0.03em;
+  --per-char: 75ms;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 1.5rem + 1vw, 2.1rem);
+  line-height: 1.12;
+  letter-spacing: var(--track);
 }
+.intro__line { display: block; white-space: nowrap; }
+.intro__type {
+  display: inline-block;
+  vertical-align: top; /* same box as the line's own strut, so the baselines meet */
+  width: calc(var(--chars) * (1ch + var(--track)));
+  overflow: hidden;
+  animation: name-type calc(var(--chars) * var(--per-char)) steps(var(--chars), end) var(--at) backwards;
+}
+.intro__line:first-child .intro__type { --at: 0.7s; }
+.intro__line:last-child .intro__type { --at: 1.2s; }
+/* The cursor: one character cell of the mono grid, descender line to ascender line. */
+.intro__line::after {
+  content: "";
+  display: inline-block;
+  width: calc(1ch + var(--track));
+  height: 0.98em;
+  vertical-align: -0.2em;
+  background: var(--accent);
+}
+.intro__line:where(:first-child)::after { /* :where keeps it weak enough for the reduced-motion rule */
+  visibility: hidden;
+  animation: name-here 1.1s step-end, name-think 0.35s ease-in-out 2 alternate;
+}
+.intro__line:where(:last-child)::after {
+  animation: name-away 1.1s step-end, name-blink 1s step-end 1.95s infinite;
+}
+@keyframes name-type { from { width: 0; } }
+@keyframes name-here { from, to { visibility: visible; } }
+@keyframes name-away { from, to { visibility: hidden; } }
+@keyframes name-think { to { opacity: 0.25; } }
+@keyframes name-blink { 50% { opacity: 0; } }
 .intro__role { font-size: 1.125rem; font-weight: 600; }
 .intro__degree { color: var(--text-muted); font-size: 0.95rem; }
 
@@ -714,7 +753,7 @@ h2::before {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .intro, .backdrop, .tags__status::after { animation: none; }
+  .intro, .backdrop, .tags__status::after, .intro__type, .intro__line::after { animation: none; }
   .switch__thumb, .switch__glyph { transition: none; }
 }
 
