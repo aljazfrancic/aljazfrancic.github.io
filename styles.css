@@ -466,6 +466,7 @@ h2::before {
   letter-spacing: -0.015em;
 }
 .entry__org { margin: 0.2rem 0 0.75rem; color: var(--text-muted); }
+.entry__body > p + p { margin-top: 0.75rem; }
 .entry--compact { padding: 1.25rem 0; }
 .entry--compact .entry__title { font-size: 1.05rem; }
 .entry--compact .entry__org { margin-bottom: 0; }
