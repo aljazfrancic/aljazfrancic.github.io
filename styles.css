@@ -658,20 +658,22 @@ h2::before {
     column-gap: clamp(3rem, 7vw, 6.5rem);
     padding: 0 2.5rem;
   }
+  /* Pinned at any height: at least a screen tall, it sticks by its bottom edge. On a short
+     screen (a tablet held sideways) it scrolls up until its end shows, then holds, so nothing
+     is cut off and the column never runs empty. */
   .intro {
-    align-self: start;
+    position: sticky;
+    bottom: 0;
+    align-self: end;
+    min-height: 100vh;
+    min-height: 100dvh;
     padding: 4.5rem 0 2.5rem;
   }
   .intro__id { margin-top: 0; }
   .intro__avatar { width: 6.25rem; height: 6.25rem; }
-  .controls { order: 1; align-self: flex-start; margin-top: 2.5rem; }
+  .controls { order: 1; align-self: flex-start; margin-top: auto; padding-top: 2.5rem; }
   .toc { display: block; margin-top: 2.25rem; }
   main { padding: 4.5rem 0 2.5rem; }
-}
-/* Pin it only when it fits, so nothing can be cut off on short screens. */
-@media (min-width: 60em) and (min-height: 40rem) {
-  .intro { position: sticky; top: 0; height: 100vh; height: 100dvh; }
-  .controls { margin-top: auto; }
 }
 
 /* --- Phones --- */
@@ -701,7 +703,7 @@ h2::before {
   :root { color-scheme: light !important; }
   body::before, .backdrop, .skip, .controls, .toc, .footer { display: none; }
   .page { display: block; max-width: none; padding: 0; }
-  .intro { position: static; height: auto; animation: none; }
+  .intro { position: static; min-height: 0; animation: none; }
   main { padding-top: 1.5rem; }
   .card, .more li, .entry { break-inside: avoid; }
   .card { box-shadow: none; }
