@@ -257,7 +257,9 @@
     cost = frames === 0 ? ms : cost * 0.9 + ms * 0.1;
     late = frames === 0 ? FRAME_MS : late * 0.8 + gap * 0.2;
     frames++;
-    if (frames < 8 || (cost < 6 && late < FRAME_MS * 1.6)) return;
+    // Frames 67 ms apart aren't late: a browser capped at 30 fps (a battery saver) skips every
+    // other one, so only gaps past twice the frame time count.
+    if (frames < 8 || (cost < 6 && late < FRAME_MS * 2)) return;
     frames = 0;
     if (quality === 1) {
       quality = 0.7; // first step: fewer rows at one pixel per CSS pixel
