@@ -236,7 +236,7 @@ body::after {
   object-fit: cover;
   box-shadow: var(--shadow);
 }
-/* The name, typed out in mono by a block cursor in the headings' accent, which stays after it.
+/* The name, typed out in mono in the accent by a block cursor of the same colour, which stays.
    Each line is clipped to a whole number of characters (--chars, set in the HTML), so a
    steps() animation of its width reveals one character at a time; the cursor, the line's
    ::after, follows the edge. The first cursor pulses as if thinking, types the first name and
@@ -249,6 +249,7 @@ body::after {
   font-size: clamp(1.75rem, 1.5rem + 1vw, 2.1rem);
   line-height: 1.12;
   letter-spacing: var(--track);
+  color: var(--accent);
 }
 .intro__line { display: block; white-space: nowrap; }
 .intro__type {
@@ -267,7 +268,7 @@ body::after {
   width: calc(1ch + var(--track));
   height: 0.98em;
   vertical-align: -0.2em;
-  background: var(--accent);
+  background: currentColor;
 }
 .intro__line:where(:first-child)::after { /* :where keeps it weak enough for the reduced-motion rule */
   visibility: hidden;
