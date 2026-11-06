@@ -473,9 +473,7 @@ h2::before {
 .entry--compact .entry__body > p:last-child { margin-top: 0.3rem; }
 
 /* Titles of works, and a paper still to come: italic. */
-.work, .refs__pending { font-style: italic; }
-.work { color: var(--text); }
-.refs__pending { color: var(--text-muted); }
+.work { font-style: italic; color: var(--text); }
 
 .refs {
   display: grid;
