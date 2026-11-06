@@ -657,22 +657,35 @@ h2::before {
     column-gap: clamp(3rem, 7vw, 6.5rem);
     padding: 0 2.5rem;
   }
-  /* Pinned at any height: at least a screen tall, it sticks by its bottom edge. On a short
-     screen (a tablet held sideways) it scrolls up until its end shows, then holds, so nothing
-     is cut off and the column never runs empty. */
+  /* Pinned to the top, exactly one small viewport tall: it holds still while a tablet's
+     address bar slides in and out. On a screen too short for it, it scrolls on its own.
+     The negative margin gives the avatar's shadow and focus rings room inside that box. */
   .intro {
     position: sticky;
-    bottom: 0;
-    align-self: end;
-    min-height: 100vh;
-    min-height: 100dvh;
-    padding: 4.5rem 0 2.5rem;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    height: 100svh;
+    margin-inline: -1.5rem;
+    padding: 4.5rem 1.5rem 2.5rem;
+    overflow-y: auto;
+    scrollbar-width: none;
   }
+  .intro::-webkit-scrollbar { display: none; }
   .intro__id { margin-top: 0; }
   .intro__avatar { width: 6.25rem; height: 6.25rem; }
   .controls { order: 1; align-self: flex-start; margin-top: auto; padding-top: 2.5rem; }
   .toc { display: block; margin-top: 2.25rem; }
   main { padding: 4.5rem 0 2.5rem; }
+}
+/* Short wide screens (a tablet held sideways): tighter spacing, so the sidebar still fits. */
+@media (min-width: 60em) and (max-height: 40rem) {
+  .intro, main { padding-top: 2.75rem; }
+  .intro { padding-bottom: 1.5rem; }
+  .intro__avatar { width: 5.25rem; height: 5.25rem; }
+  .toc { margin-top: 1.5rem; }
+  .intro__links { margin-top: 1.25rem; }
+  .controls { padding-top: 1.5rem; }
 }
 
 /* --- Phones --- */
@@ -702,7 +715,7 @@ h2::before {
   :root { color-scheme: light !important; }
   body::before, .backdrop, .skip, .controls, .toc, .footer { display: none; }
   .page { display: block; max-width: none; padding: 0; }
-  .intro { position: static; min-height: 0; animation: none; }
+  .intro { position: static; height: auto; margin: 0; padding: 0; overflow: visible; animation: none; }
   main { padding-top: 1.5rem; }
   .card, .more li, .entry { break-inside: avoid; }
   .card { box-shadow: none; }
