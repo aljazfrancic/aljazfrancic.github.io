@@ -447,7 +447,9 @@ body::after {
 }
 
 /* --- Sections --- */
-main { padding-top: 3.5rem; } /* no fade-in: the lead paragraph is the largest paint */
+/* Rises with the intro, but without its fade-in: the lead paragraph is the largest paint, and
+   a fade would hold it back until the end (Lighthouse LCP 0.9 s -> 3.2 s on a phone). */
+main { padding-top: 3.5rem; animation: lift 0.5s ease-out backwards; }
 .section { scroll-margin-top: 2rem; }
 .section + .section { margin-top: 4.5rem; }
 h2 {
@@ -702,6 +704,7 @@ h2::before {
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
 }
+@keyframes lift { from { transform: translateY(10px); } }
 
 /* --- Wide screens: the intro becomes a sidebar --- */
 @media (min-width: 60em) {
@@ -754,7 +757,7 @@ h2::before {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .intro, .backdrop, .tags__status::after, .intro__type, .intro__line::after { animation: none; }
+  .intro, main, .backdrop, .tags__status::after, .intro__type, .intro__line::after { animation: none; }
   .switch__thumb, .switch__glyph { transition: none; }
 }
 
@@ -770,7 +773,7 @@ h2::before {
   body::before, body::after, .backdrop, .skip, .controls, .toc, .footer { display: none; }
   .page { display: block; max-width: none; padding: 0; }
   .intro { position: static; height: auto; margin: 0; padding: 0; overflow: visible; animation: none; }
-  main { padding-top: 1.5rem; }
+  main { padding-top: 1.5rem; animation: none; }
   .card, .more li, .entry { break-inside: avoid; }
   .card { box-shadow: none; }
 }
