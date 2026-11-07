@@ -237,14 +237,16 @@
 
     // Too slow? Judged on both the script's own time and how late frames actually arrive (which
     // includes drawing and compositing). After eight slow frames: fewer rows at one pixel per
-    // CSS pixel; after eight more: a still frame.
+    // CSS pixel; after eight more: a still frame, for a while.
     let cost = 0;
     let late = 0;
     let frames = 0;
+    let rest = 0; // how long the still frame is held before trying again
     const adapt = (ms, gap) => {
       cost = frames === 0 ? ms : cost * 0.9 + ms * 0.1;
       late = frames === 0 ? FRAME_MS : late * 0.8 + gap * 0.2;
       frames++;
+      if (frames > 24 * 60) rest = 0; // a minute of smooth flight: the next wait starts short again
       // Frames 67 ms apart aren't late: a browser capped at 30 fps (a battery saver) skips every
       // other one, so only gaps past twice the frame time count.
       if (frames < 8 || (cost < 6 && late < FRAME_MS * 2)) return;
@@ -253,7 +255,20 @@
         quality = 0.7; // first step: fewer rows at one pixel per CSS pixel
         dprCap = 1;
         fit();
-      } else gaveUp = true; // still too slow: hold a still frame
+        return;
+      }
+      // Still too slow: hold a still frame, then try again from the start. The slowness may pass
+      // (another program keeping the machine busy, a throttled window), and giving up for good
+      // froze the backdrop until a reload. Each wait doubles, from five seconds to five minutes,
+      // so a device that really is too slow rarely pays for a retry.
+      gaveUp = true;
+      rest = Math.min(rest * 2 || 5000, 300000);
+      setTimeout(() => {
+        gaveUp = false;
+        quality = 1;
+        dprCap = 1.5;
+        fit(); // back to full quality; fit() also restarts the flight
+      }, rest);
     };
 
     // Workers without requestAnimationFrame (older Safari) tick on a timer instead.
