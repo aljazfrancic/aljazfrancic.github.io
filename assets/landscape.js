@@ -88,7 +88,7 @@
     let ratio = 1; // the screen's device pixels per CSS pixel
     let travel = 0; // rows flown so far
     let clock = 0; // seconds of motion so far (stops while paused)
-    let quality = 1; // share of the full row count, lowered on slow devices
+    let quality = 1; // share of the full row count, lowered on slow devices before the first frame
     const rows = []; // projected rows, nearest first
     const batches = Array.from({ length: SHADES }, () => []);
     const shadeOf = (v) => Math.min(SHADES - 1, Math.max(0, Math.floor(((v - 0.25) / 0.5) * SHADES)));
@@ -218,6 +218,7 @@
     // Size the surface to the canvas's box, drawn upside down. Big or dense screens get fewer
     // device pixels, down to one per CSS pixel, or the screen's own when zoomed out.
     let dprCap = 1.5;
+    let judged = false;
     const fit = () => {
       if (w < 1 || h < 1) return;
       let dpr = Math.min(ratio, dprCap);
@@ -225,6 +226,19 @@
       surface.width = Math.round(w * dpr);
       surface.height = Math.round(h * dpr);
       ctx.setTransform(surface.width / w, 0, 0, -surface.height / h, 0, surface.height);
+      // Pick the row count once, before the first frame is shown (the canvas is still fading in):
+      // changing it later moves every row, and the whole terrain visibly jumps. The quickest of
+      // three identical renders sidesteps the script's first, unoptimised run.
+      if (!judged && to) {
+        judged = true;
+        let best = Infinity;
+        for (let i = 0; i < 3; i++) {
+          const t0 = performance.now();
+          render(t0);
+          best = Math.min(best, performance.now() - t0);
+        }
+        if (best >= 6) quality = 0.7;
+      }
       render(performance.now()); // resizing cleared the canvas: redraw before it is shown
       schedule(); // resumes the flight if the canvas was hidden
     };
@@ -236,8 +250,10 @@
     const moving = () => started && !calm && !gaveUp;
 
     // Too slow? Judged on both the script's own time and how late frames actually arrive (which
-    // includes drawing and compositing). After eight slow frames: fewer rows at one pixel per
-    // CSS pixel; after eight more: a still frame, for a while.
+    // includes drawing and compositing). After eight slow frames: one device pixel per CSS pixel
+    // (the same picture, a little softer; the row count stays, see fit()); after eight more: a
+    // still frame, for a while.
+    let sharp = true;
     let cost = 0;
     let late = 0;
     let frames = 0;
@@ -251,8 +267,8 @@
       // other one, so only gaps past twice the frame time count.
       if (frames < 8 || (cost < 6 && late < FRAME_MS * 2)) return;
       frames = 0;
-      if (quality === 1) {
-        quality = 0.7; // first step: fewer rows at one pixel per CSS pixel
+      if (sharp) {
+        sharp = false;
         dprCap = 1;
         fit();
         return;
@@ -265,9 +281,9 @@
       rest = Math.min(rest * 2 || 5000, 300000);
       setTimeout(() => {
         gaveUp = false;
-        quality = 1;
+        sharp = true;
         dprCap = 1.5;
-        fit(); // back to full quality; fit() also restarts the flight
+        fit(); // back to full resolution; fit() also restarts the flight
       }, rest);
     };
 
@@ -310,6 +326,7 @@
         from = to ? colours(now) : next;
         to = next;
         fadeStart = now;
+        if (!judged) fit(); // a size that came first is drawn (and judged) now
         schedule();
       },
       show(visible) {
