@@ -24,7 +24,7 @@
   // The drawing itself, on `surface` (a canvas or an OffscreenCanvas) through its 2D context.
   // It knows nothing of the page: the page tells it its size, colours, whether it is on screen,
   // whether to stay still and when to start, through the methods it returns.
-  const engine = (surface, ctx, initial) => {
+  const engine = (surface, ctx) => {
     // Value noise: a hashed lattice, smoothstep-interpolated, four octaves; 0..1 around 0.5.
     const seed = (Math.random() * 0x7fffffff) | 0;
     const hash = (x, y) => {
@@ -53,9 +53,10 @@
     };
 
     // Colours [low, high] come from the page's CSS, so they follow the theme; changes fade.
+    // Nothing is drawn until the first ones arrive.
     const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
-    let from = initial;
-    let to = initial;
+    let from;
+    let to;
     let fadeStart = -Infinity;
     const colours = (now) => {
       const t = Math.min(1, (now - fadeStart) / FADE_MS);
@@ -100,7 +101,7 @@
 
     const render = (now) => {
       ctx.clearRect(0, 0, w, h);
-      if (w < 1 || h < 1) return;
+      if (w < 1 || h < 1 || !to) return;
       prepare(now);
 
       // Camera: the nearest row meets the bottom edge, the farthest sits just below the horizon.
@@ -291,7 +292,7 @@
       },
       colours(next) {
         const now = performance.now();
-        from = colours(now);
+        from = to ? colours(now) : next;
         to = next;
         fadeStart = now;
         schedule();
@@ -315,7 +316,7 @@
   if (typeof document === "undefined") {
     let drawing;
     onmessage = ({ data }) => {
-      if (data.canvas) drawing = engine(data.canvas, data.canvas.getContext("2d"), data.colours);
+      if (data.canvas) drawing = engine(data.canvas, data.canvas.getContext("2d"));
       else drawing?.[data[0]](...data.slice(1));
     };
     return;
@@ -335,41 +336,58 @@
     return [parse(cs.borderTopColor), parse(cs.color)];
   };
 
-  let send;
-  if (canvas.transferControlToOffscreen && window.Worker && script?.src) {
-    try {
-      const worker = new Worker(script.src); // throws for a page opened straight from disk
-      const offscreen = canvas.transferControlToOffscreen();
-      worker.postMessage({ canvas: offscreen, colours: read() }, [offscreen]);
-      send = (...message) => worker.postMessage(message);
-    } catch {}
-  }
-  if (!send) {
+  // Hand the canvas to a worker, or draw here where that isn't possible. Returns how to send
+  // [method, ...arguments] to the drawing, or nothing if the canvas can't be drawn on at all.
+  const connect = () => {
+    if (canvas.transferControlToOffscreen && window.Worker && script?.src) {
+      try {
+        const worker = new Worker(script.src); // throws for a page opened straight from disk
+        const offscreen = canvas.transferControlToOffscreen();
+        worker.postMessage({ canvas: offscreen }, [offscreen]);
+        return (...message) => worker.postMessage(message);
+      } catch {}
+    }
     const ctx = canvas.getContext("2d");
-    if (!ctx) return canvas.remove();
-    const drawing = engine(canvas, ctx, read());
-    send = (method, ...args) => drawing[method](...args);
-  }
+    if (!ctx) return null;
+    const drawing = engine(canvas, ctx);
+    return (method, ...args) => drawing[method](...args);
+  };
+
+  // Until then, messages wait in a queue.
+  let queue = [];
+  let send = (...message) => queue.push(message);
+  const recolour = () => send("colours", read());
 
   // Its CSS height is the large viewport, so a phone's address bar sliding in and out doesn't
-  // resize it.
-  new ResizeObserver(() => {
+  // resize it. The drawing is connected on the first call, where the browser has already worked
+  // out the page's styles: handing the canvas over or reading its colours during start-up would
+  // force that whole pass early, while the page is still loading.
+  const sizes = new ResizeObserver(() => {
+    if (queue) {
+      const direct = connect();
+      if (!direct) {
+        sizes.disconnect();
+        return canvas.remove();
+      }
+      send = direct;
+      recolour();
+      for (const message of queue) send(...message);
+      queue = null;
+    }
     const box = canvas.getBoundingClientRect();
     send("size", box.width, box.height, window.devicePixelRatio || 1);
-  }).observe(canvas);
+  });
 
   let inView = true;
   const show = () => send("show", inView && !document.hidden);
-  new IntersectionObserver(([entry]) => {
+  const views = new IntersectionObserver(([entry]) => {
     inView = entry.isIntersecting;
     show();
-  }).observe(canvas);
+  });
   document.addEventListener("visibilitychange", show);
 
-  const recolour = () => send("colours", read());
   document.getElementById("theme-toggle")?.addEventListener("change", recolour);
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", recolour);
-  addEventListener("pageshow", recolour);
 
   const still = matchMedia("(prefers-reduced-motion: reduce)");
   const saveData = navigator.connection?.saveData === true;
@@ -377,8 +395,23 @@
   calm();
   still.addEventListener("change", calm);
 
+  // The rest waits until the page has first painted, so none of it runs alongside that first
+  // layout: setting up the drawing never holds the paint up (or gets counted as part of it).
   const start = () => send("start");
   const whenIdle = () => (window.requestIdleCallback ? requestIdleCallback(start, { timeout: 3000 }) : setTimeout(start, 500));
-  if (document.readyState === "complete") whenIdle();
-  else addEventListener("load", whenIdle, { once: true });
+  const watch = () => {
+    sizes.observe(canvas);
+    views.observe(canvas);
+    addEventListener("pageshow", recolour); // back from the history cache: the theme may differ
+    // The flight waits until the page has loaded and the browser is idle.
+    if (document.readyState === "complete") whenIdle();
+    else addEventListener("load", whenIdle, { once: true });
+  };
+  if (window.PerformanceObserver?.supportedEntryTypes?.includes("paint")) {
+    new PerformanceObserver((_, observer) => {
+      observer.disconnect();
+      watch();
+    }).observe({ type: "paint", buffered: true });
+  } else if (document.readyState === "complete") watch();
+  else addEventListener("load", watch, { once: true });
 })();
