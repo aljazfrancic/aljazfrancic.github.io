@@ -55,7 +55,7 @@
         "name": "Aljaž Frančič · Inženir in raziskovalec",
         "inLanguage": "sl",
         "isPartOf": { "@id": "https://aljazfrancic.github.io/#website" },
-        "dateModified": "2026-11-06",
+        "dateModified": "2026-11-07",
         "mainEntity": { "@id": "https://aljazfrancic.github.io/#person" }
       },
       {
@@ -100,14 +100,38 @@
         "datePublished": "2026-11-06",
         "version": "1.0",
         "inLanguage": "en",
-        "url": "https://github.com/aljazfrancic/delta-stream",
+        "url": "https://doi.org/10.5281/zenodo.24036253",
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "DOI",
+          "value": "10.5281/zenodo.24036253",
+          "url": "https://doi.org/10.5281/zenodo.24036253"
+        },
+        "publisher": { "@type": "Organization", "name": "Zenodo", "url": "https://zenodo.org/" },
         "encoding": {
           "@type": "MediaObject",
-          "contentUrl": "https://github.com/aljazfrancic/delta-stream/blob/main/paper/paper.pdf",
+          "contentUrl": "https://zenodo.org/records/24036253/files/Francic2026_Residual-Stream-Updates_v1.0.pdf",
           "encodingFormat": "application/pdf"
         },
+        "isBasedOn": { "@id": "https://aljazfrancic.github.io/#delta-stream-code" },
         "license": "https://creativecommons.org/licenses/by/4.0/",
         "keywords": ["Mechanistic interpretability", "Residual stream", "Transformers", "Sparse autoencoders", "State-space model", "Pre-registration"]
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://aljazfrancic.github.io/#delta-stream-code",
+        "name": "delta-stream",
+        "author": { "@id": "https://aljazfrancic.github.io/#person" },
+        "url": "https://doi.org/10.5281/zenodo.24036211",
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "DOI",
+          "value": "10.5281/zenodo.24036211",
+          "url": "https://doi.org/10.5281/zenodo.24036211"
+        },
+        "codeRepository": "https://github.com/aljazfrancic/delta-stream",
+        "programmingLanguage": "Python",
+        "license": ["https://opensource.org/license/mit", "https://creativecommons.org/licenses/by/4.0/"]
       }
     ]
   }
@@ -214,7 +238,7 @@
             <p>Zasnoval in izvedel sem vnaprej registrirano študijo medslojne dinamike pri priklicu dejstev v transformerjih na šestih jezikovnih modelih iz treh družin, v celoti na potrošniški strojni opremi. Članek, zamrznjeni protokol in vsa koda so javno dostopni. Izvedel sem tudi študijo pojava grokking (zakasnjene generalizacije) na nevronskih mrežah za prepoznavo kretenj iz elektromiografskih podatkov.</p>
             <p>Ob raziskavah sem od zasnove do izdaje razvil tudi lastno programsko opremo: edh-deck-diff, spletno aplikacijo v javni beta različici, ki primerja kupček cEDH z najnovejšimi kupčki, ki so se na turnirjih dobro odrezali; funding-extract, kaskado pravila&nbsp;→ klasifikator&nbsp;→ LLM za izločanje podatkov s spleta, s strogim preverjanjem ujemanja z virom in evalvacijami; lokalni cevovod RAG nad slovenskimi dokumenti; ter model za napovedovanje odhoda strank telekomunikacijskega operaterja z razlagami SHAP.</p>
             <dl class="refs">
-              <dt>Članek</dt><dd><a class="work" href="https://github.com/aljazfrancic/delta-stream/blob/main/paper/paper.pdf" lang="en" rel="noopener noreferrer" target="_blank">How Residual-Stream Updates Travel Through Depth: A Pre-Registered Study of Cross-Layer Dynamics in Transformer Factual Recall</a></dd>
+              <dt>Članek</dt><dd><a class="work" href="https://doi.org/10.5281/zenodo.24036253" lang="en" rel="noopener noreferrer" target="_blank">How Residual-Stream Updates Travel Through Depth: A Pre-Registered Study of Cross-Layer Dynamics in Transformer Factual Recall</a></dd>
               <dt>Spletna aplikacija</dt><dd><a href="https://edh-deck-diff.onrender.com/" rel="noopener noreferrer" target="_blank">edh-deck-diff</a></dd>
               <dt>Koda</dt><dd><a href="https://github.com/aljazfrancic/delta-stream" rel="noopener noreferrer" target="_blank">delta-stream</a> · <a href="https://github.com/aljazfrancic/myo-keras" rel="noopener noreferrer" target="_blank">Študija grokkinga</a> · <a href="https://github.com/aljazfrancic/funding-extract" rel="noopener noreferrer" target="_blank">funding-extract</a> · <a href="https://github.com/aljazfrancic/local-rag" rel="noopener noreferrer" target="_blank">local-rag</a> · <a href="https://github.com/aljazfrancic/churn" rel="noopener noreferrer" target="_blank">churn</a></dd>
             </dl>
