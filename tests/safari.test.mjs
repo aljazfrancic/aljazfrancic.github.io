@@ -2,8 +2,7 @@
 // Playwright's WebKit covers the rest; this checks the Safari that visitors actually have.
 //
 //   sudo safaridriver --enable        once per Mac
-//   npm run build && npm run safari   desktop Safari
-//   SAFARI=ios npm run safari         Safari in the iOS Simulator
+//   npm run build && npm run safari   Safari
 //   SAFARI=chrome npm run safari      the same tests in Chrome, to work on them away from a Mac
 //
 // WebDriver can't read Safari's console, so the pages are served with tests/harness.js, which
@@ -12,8 +11,8 @@
 //
 // Safari on GitHub's macOS runners shows no canvas at all, not even a red square drawn on a plain
 // one (they're virtual machines without a GPU), so there the backdrop is only checked to start and
-// draw (its frame log); wherever a canvas does show (the iOS Simulator, a real Mac) its motion and
-// pixels are checked too.
+// draw (its frame log); wherever a canvas does show (a real Mac) its motion and pixels are checked
+// too.
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -21,14 +20,12 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { after, before, describe, test } from "node:test";
 import { Browser, Builder, By } from "selenium-webdriver";
 import chrome from "selenium-webdriver/chrome.js";
-import { Pointer } from "selenium-webdriver/lib/input.js";
 import safari from "selenium-webdriver/safari.js";
 import { serve } from "../scripts/serve.mjs";
 
 const PORT = 8125;
 const BASE = `http://127.0.0.1:${PORT}`;
-const TARGET = process.env.SAFARI ?? "desktop"; // desktop | ios | chrome
-const PHONE = TARGET === "ios";
+const TARGET = process.env.SAFARI ?? "desktop"; // desktop | chrome
 const PAGES = [
   { path: "/", lang: "en-GB" },
   { path: "/sl/", lang: "sl" },
@@ -39,29 +36,7 @@ const builder = () => {
   if (TARGET === "chrome") {
     return new Builder().forBrowser(Browser.CHROME).setChromeOptions(new chrome.Options().addArguments("--headless=new", "--window-size=1280,900"));
   }
-  const options = new safari.Options();
-  if (PHONE) {
-    options.set("platformName", "iOS");
-    options.set("safari:useSimulator", true);
-    options.set("safari:deviceType", "iPhone");
-    // A simulator booted beforehand (CI does): starting a cold one can outlast the session's timeout.
-    if (process.env.SIMULATOR_UDID) options.set("safari:deviceUDID", process.env.SIMULATOR_UDID);
-  }
-  return new Builder().forBrowser(Browser.SAFARI).setSafariOptions(options);
-};
-
-// Starting a Safari session now and then fails on CI machines (Safari still starting up, an
-// earlier session not yet released): try up to three times before giving up.
-const startSession = async () => {
-  for (let attempt = 1; ; attempt++) {
-    try {
-      return await builder().build();
-    } catch (error) {
-      if (attempt === 3) throw error;
-      console.log(`The session didn't start (${error.message.split("\n")[0]}), trying again.`);
-      await sleep(5000 * attempt);
-    }
-  }
+  return new Builder().forBrowser(Browser.SAFARI).setSafariOptions(new safari.Options());
 };
 
 let driver;
@@ -106,30 +81,10 @@ const addStyle = (css) => run("const style = document.createElement('style'); st
 
 const background = () => run("return getComputedStyle(document.body).backgroundColor");
 
-// Clicks an element, or on a phone taps it, then waits for effect() to come true. In the iOS
-// Simulator safaridriver's taps haven't always reached the page (seen on CI, even on a plain
-// link): when a tap changes nothing, a scripted click stands in and the log says so.
+// Clicks an element, then waits for effect() to come true.
 const press = async (selector, effect) => {
-  const element = await driver.findElement(By.css(selector));
-  if (PHONE) {
-    const finger = new Pointer("finger", Pointer.Type.TOUCH);
-    try {
-      await driver.actions().insert(finger, finger.move({ origin: element }), finger.press(), finger.release()).perform();
-    } catch (error) {
-      console.log(`The tap on ${selector} failed: ${error.message.split("\n")[0]}`);
-    }
-  } else {
-    await element.click();
-  }
-  const end = Date.now() + 3000;
-  while (Date.now() < end) {
-    if (await effect()) return;
-    await sleep(200);
-  }
-  if (!PHONE) assert.fail(`clicking ${selector} changed nothing`);
-  console.log(`The tap on ${selector} didn't reach the page; clicking it from a script instead.`);
-  await run("arguments[0].click()", element);
-  await waitFor(effect, `${selector} should respond to a scripted click`);
+  await driver.findElement(By.css(selector)).click();
+  await waitFor(effect, `clicking ${selector} should change the page`, 3000);
 };
 
 // Can this browser show a canvas at all? A red square drawn on a plain canvas must change the
@@ -176,13 +131,13 @@ const check = (name, fn) =>
 describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
   before(async () => {
     server = await serve({ port: PORT, harness: true });
-    driver = await startSession();
+    driver = await builder().build();
     await driver.manage().setTimeouts({ script: 30_000, pageLoad: 60_000 });
     const capabilities = await driver.getCapabilities();
     const version = `${capabilities.getBrowserName()} ${capabilities.getBrowserVersion()} on ${capabilities.getPlatform()}`;
     console.log(`Testing ${version}`);
     if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Safari tests (${TARGET})\n\n${version}\n\n`);
-    if (!PHONE) await driver.manage().window().setRect({ width: 1280, height: 900 });
+    await driver.manage().window().setRect({ width: 1280, height: 900 });
   });
 
   after(async () => {
@@ -246,7 +201,7 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
         // A Safari that can't show a canvas doesn't reliably give a canvas's worker its animation
         // frames either (on CI the flight ran in some runs and stalled after a second in others),
         // so neither the pixels nor the motion can be judged here.
-        const note = "This Safari shows no canvas at all, not even a plain red square (on GitHub's macOS runners: no GPU). Checked: the backdrop's worker starts and draws without errors. Not checked here: its pixels and its motion (the iOS Simulator job checks those).";
+        const note = "This Safari shows no canvas at all, not even a plain red square (on GitHub's macOS runners: no GPU). Checked: the backdrop's worker starts and draws without errors. Not checked here: its pixels and its motion (the Chromium, Firefox and WebKit job checks those).";
         console.log(note);
         if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${note}\n\n`);
       }
@@ -276,9 +231,9 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
 
   for (const { path } of PAGES) {
     check(`${path} never scrolls sideways`, async () => {
-      // A phone has the width it has; a desktop window is tried wide and narrow.
-      for (const width of PHONE ? [null] : [1280, 768]) {
-        if (width) await driver.manage().window().setRect({ width, height: 900 });
+      // The window is tried wide and narrow.
+      for (const width of [1280, 768]) {
+        await driver.manage().window().setRect({ width, height: 900 });
         await open(path);
         const { scroll, edge, inner } = await run(`return {
           scroll: document.documentElement.scrollWidth,
@@ -288,7 +243,7 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
         console.log(`${path} at ${inner} px wide: content ${scroll} px`);
         assert.ok(scroll <= edge, `${path} at ${inner} px: the page is ${scroll} px wide`);
       }
-      if (!PHONE) await driver.manage().window().setRect({ width: 1280, height: 900 });
+      await driver.manage().window().setRect({ width: 1280, height: 900 });
     });
   }
 

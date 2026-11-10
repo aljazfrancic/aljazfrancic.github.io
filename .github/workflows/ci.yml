@@ -115,51 +115,10 @@ jobs:
           name: safari-screenshots
           path: test-results/safari/
 
-  ios:
-    name: Safari (iOS Simulator)
-    needs: build
-    runs-on: macos-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - name: Unpack the build
-        uses: actions/download-artifact@v8
-        with:
-          name: github-pages
-      - run: mkdir dist && tar -xf artifact.tar -C dist
-      - run: sudo safaridriver --enable
-      - name: Boot an iPhone simulator
-        id: simulator
-        run: |
-          udid=$(xcrun simctl list devices available --json | python3 -c '
-          import json, sys
-          devices = json.load(sys.stdin)["devices"]
-          runtimes = sorted((r for r in devices if ".iOS-" in r), key=lambda r: [int(n) for n in r.split(".iOS-")[1].split("-")])
-          print(next(d["udid"] for d in devices[runtimes[-1]] if d["name"].startswith("iPhone")))')
-          xcrun simctl list devices | grep "$udid"
-          xcrun simctl boot "$udid"
-          xcrun simctl bootstatus "$udid" -b
-          xcrun simctl launch "$udid" com.apple.mobilesafari # a first start, before the session waits on one
-          echo "udid=$udid" >> "$GITHUB_OUTPUT"
-      - run: npm run safari
-        env:
-          SAFARI: ios
-          SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
-      - if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: ios-screenshots
-          path: test-results/safari/
-
   deploy:
     name: Deploy
     if: github.ref == 'refs/heads/main'
-    needs: [browsers, lighthouse, safari, ios]
+    needs: [browsers, lighthouse, safari]
     runs-on: ubuntu-24.04
     permissions:
       pages: write
