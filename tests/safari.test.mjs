@@ -198,17 +198,18 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
         assert.ok(fonts.some(([name, style, status]) => name === family && style === "normal" && status === "loaded"), `${family} should be loaded`);
       }
 
-      // The flight goes on: new frames keep coming. Polled, as a device the backdrop judges too
-      // slow gets a still frame for a while before it tries again.
-      await waitFor(
-        async () => {
-          const before = await frames();
-          await sleep(1200);
-          return (await frames()) - before >= 5;
-        },
-        "the backdrop should keep drawing new frames",
-        20_000,
-      );
+      // The flight goes on: new frames keep coming, at least a second's worth (24 a second). Given
+      // 45 s, because a machine the backdrop judges too slow (as CI's virtual Macs can be) gets
+      // still frames for 5, then 10, then 20 s, with short bursts of flight in between.
+      const start = await frames();
+      const flying = async () => (await frames()) - start >= 24;
+      const end = Date.now() + 45_000;
+      while (!(await flying()) && Date.now() < end) await sleep(500);
+      if (!(await flying())) {
+        const log = await run("return window.__frames");
+        const gaps = log.slice(1).map((t, i) => t - log[i]).filter((gap) => gap > 200);
+        assert.fail(`the backdrop should keep drawing new frames: ${log.length - start} new in 45 s (frames so far ${log.length}, last at ${log.at(-1)} ms, pauses ${gaps.join(", ")} ms)`);
+      }
 
       // And what it draws reaches the screen, wherever a canvas can show at all.
       canvasShows ??= await probeCanvas();
