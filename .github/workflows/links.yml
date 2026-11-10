@@ -1,0 +1,39 @@
+# Once a week: do the external links on the site still work? Kept out of the deploy on purpose
+# (other sites go down or block automated checks now and then). When links are broken, this opens
+# an issue labelled broken-links, or adds to the one already open.
+name: Links
+
+on:
+  schedule:
+    - cron: "23 6 * * 1" # Mondays, 06:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    name: External links
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run links -- --report links.md
+      - name: Report broken links in an issue
+        if: failure() && hashFiles('links.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create broken-links --color d73a4a --description "Found by the weekly link check" --force
+          open=$(gh issue list --label broken-links --state open --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --body-file links.md
+          else
+            gh issue create --title "Broken links on the site" --label broken-links --body-file links.md
+          fi

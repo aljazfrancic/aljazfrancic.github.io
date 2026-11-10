@@ -1,0 +1,27 @@
+{
+  "name": "aljazfrancic.github.io",
+  "private": true,
+  "description": "Personal site of Aljaž Frančič: build, local server and tests. The published site itself has no dependencies.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.19"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "npm run build && node scripts/serve.mjs",
+    "test": "npm run build && npm run validate && npm run e2e",
+    "validate": "node tests/validate.mjs",
+    "e2e": "playwright test -c tests/playwright.config.mjs",
+    "lighthouse": "node tests/lighthouse.mjs",
+    "safari": "node --test --test-reporter=spec tests/safari.test.mjs",
+    "links": "node tests/links.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "chrome-launcher": "1.2.2",
+    "lighthouse": "13.6.0",
+    "selenium-webdriver": "4.51.0",
+    "vnu-jar": "26.10.12"
+  }
+}
