@@ -1,6 +1,8 @@
 // Checks that don't depend on the browser engine, so they run once: every local reference
 // resolves, the metadata in <head> agrees with itself and with the sitemap, the copy rules hold.
 import { expect, test } from "@playwright/test";
+import { readdir, readFile } from "node:fs/promises";
+import { gzipSync } from "node:zlib";
 
 const SITE = "https://aljazfrancic.github.io/";
 const PAGES = [
@@ -141,3 +143,48 @@ test("the sitemap lists both pages with their language alternates", async ({ req
   expect(entries.map((entry) => entry.loc)).toEqual(PAGES.map((page) => page.url));
   for (const entry of entries) expect(entry.alternates).toEqual(ALTERNATES);
 });
+
+// Size budgets, so weight can't creep in unnoticed. Text is measured gzipped, as it is sent;
+// fonts and images as they are. Each budget leaves some room over today's size (in brackets).
+const KB = 1024;
+const BUDGETS = {
+  page: 12 * KB, // each page's HTML (7.8 and 8.4 KB)
+  css: 10 * KB, // styles.css (7.5 KB)
+  js: 10 * KB, // the backdrop's script (7.3 KB)
+  preview: 30 * KB, // each project preview SVG (at most 22.8 KB)
+  shareCard: 300 * KB, // each share card: WhatsApp shows no preview of a bigger one (162 KB)
+  firstLoad: 450 * KB, // all a first visit downloads by the time the page has loaded (322 KB in English, 388 KB in Slovenian, which needs the fonts' extra letters)
+};
+
+test("every file stays within its size budget", async () => {
+  const dist = new URL("../dist/", import.meta.url);
+  const gz = async (file) => gzipSync(await readFile(new URL(file, dist))).length;
+  const raw = async (file) => (await readFile(new URL(file, dist))).length;
+  const over = [];
+  const check = (what, size, budget) => size > budget && over.push(`${what}: ${(size / KB).toFixed(1)} KB, over ${budget / KB} KB`);
+  for (const { path } of PAGES) check(`${path} (HTML)`, await gz(`${path.slice(1)}index.html`), BUDGETS.page);
+  check("styles.css", await gz("styles.css"), BUDGETS.css);
+  check("assets/landscape.js", await gz("assets/landscape.js"), BUDGETS.js);
+  for (const file of await readdir(new URL("assets/projects/", dist))) check(`assets/projects/${file}`, await gz(`assets/projects/${file}`), BUDGETS.preview);
+  for (const file of ["assets/og-card.jpg", "assets/og-card-sl.jpg"]) check(file, await raw(file), BUDGETS.shareCard);
+  expect(over).toEqual([]);
+});
+
+for (const { path } of PAGES) {
+  test(`${path}: a first visit downloads at most ${BUDGETS.firstLoad / KB} KB, on a desktop and on a phone`, async ({ browser }) => {
+    for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+      const page = await browser.newPage({ viewport });
+      await page.goto(path, { waitUntil: "load" });
+      await page.waitForTimeout(1500); // the backdrop's worker loads its script after the first paint
+      const { total, files } = await page.evaluate(() => {
+        const entries = [performance.getEntriesByType("navigation")[0], ...performance.getEntriesByType("resource")];
+        return {
+          total: entries.reduce((sum, entry) => sum + entry.encodedBodySize, 0),
+          files: entries.sort((a, b) => b.encodedBodySize - a.encodedBodySize).slice(0, 5).map((e) => `${new URL(e.name).pathname} ${(e.encodedBodySize / 1024).toFixed(1)} KB`),
+        };
+      });
+      await page.close();
+      expect(total, `${viewport.width} px: ${(total / KB).toFixed(1)} KB; the largest: ${files.join(", ")}`).toBeLessThanOrEqual(BUDGETS.firstLoad);
+    }
+  });
+}
