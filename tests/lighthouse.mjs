@@ -26,9 +26,13 @@ const STRICT = ["accessibility", "best-practices", "seo"];
 // Medians must stay at or under these: milliseconds, except CLS (unitless). Each sits just inside
 // the value where Lighthouse 13's curve for that metric still gives it 99.5 of 100 points, so
 // with every median within budget the performance score works out at 100 (its five metrics are
-// weighted, and all of them at 99.5 or more rounds to 100).
+// weighted, and all of them at 99.5 or more rounds to 100). One exception: First Contentful Paint
+// on mobile may reach 1250 ms, where it still earns 99 points. Lighthouse's simulated first paint
+// there lands at about 760 or about 930 ms from run to run, on either page, which left only 120 ms
+// under the 99.5-point line (1050 ms). With the other four metrics at full marks, as they are, the
+// performance score still works out at 100 up to 1500 ms.
 const BUDGETS = {
-  mobile: { "first-contentful-paint": 1050, "speed-index": 1950, "largest-contentful-paint": 1550, "total-blocking-time": 60, "cumulative-layout-shift": 0.035 },
+  mobile: { "first-contentful-paint": 1250, "speed-index": 1950, "largest-contentful-paint": 1550, "total-blocking-time": 60, "cumulative-layout-shift": 0.035 },
   desktop: { "first-contentful-paint": 540, "speed-index": 740, "largest-contentful-paint": 590, "total-blocking-time": 60, "cumulative-layout-shift": 0.035 },
 };
 const SHORT = { "first-contentful-paint": "FCP", "largest-contentful-paint": "LCP", "total-blocking-time": "TBT", "cumulative-layout-shift": "CLS", "speed-index": "SI" };
