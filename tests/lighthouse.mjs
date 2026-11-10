@@ -46,8 +46,21 @@ const median = (values) => {
 const show = (id, value) => (id === "cumulative-layout-shift" ? value.toFixed(3) : `${Math.round(value)} ms`);
 const score = (lhr, id) => Math.round(lhr.categories[id].score * 100);
 
+// Chrome now and then fails to start on a CI machine ("waiting for dynamic debugging port"):
+// up to three tries.
+const launch = async () => {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await chromeLauncher.launch({ chromeFlags: ["--headless=new", ...(CI ? ["--no-sandbox"] : [])] });
+    } catch (error) {
+      if (attempt === 3) throw error;
+      console.log(`Chrome didn't start (${error.message}), trying again.`);
+    }
+  }
+};
+
 const audit = async (url, factor) => {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless=new", ...(CI ? ["--no-sandbox"] : [])] });
+  const chrome = await launch();
   try {
     const flags = { port: chrome.port, output: "html", logLevel: "error", onlyCategories: ["performance", ...STRICT] };
     const result = await lighthouse(url, flags, factor === "desktop" ? desktopConfig : undefined);
