@@ -376,6 +376,9 @@
     if (canvas.transferControlToOffscreen && window.Worker && script?.src) {
       try {
         const worker = new Worker(script.src); // throws for a page opened straight from disk
+        // A worker that can't start (blocked, or its fetch failed) only says so later, here, when
+        // the canvas is already its own: without the canvas the page falls back to the dots.
+        worker.onerror = () => canvas.remove();
         const offscreen = canvas.transferControlToOffscreen();
         worker.postMessage({ canvas: offscreen }, [offscreen]);
         return (...message) => worker.postMessage(message);
