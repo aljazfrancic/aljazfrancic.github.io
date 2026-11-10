@@ -34,7 +34,7 @@ description.en = "Aljaž Frančič, engineer and researcher, PhD in Computer Sci
 description.sl = "Aljaž Frančič, inženir in raziskovalec, doktor računalništva in informatike. Raziskave strojnega učenja in interpretabilnosti, cevovodi z LLM, produkcijski C++."
 share_description.en = "PhD in Computer Science and Informatics · Engineer & Researcher. Machine learning and interpretability research, LLM pipelines, and production C++ on the openDAQ SDK."
 share_description.sl = "Doktor računalništva in informatike · Inženir in raziskovalec. Raziskave strojnega učenja in interpretabilnosti, cevovodi z LLM in produkcijski C++ pri kompletu openDAQ."
-share_image = { en = "assets/og-card.jpg?v=20261106", sl = "assets/og-card-sl.jpg?v=20261106" }
+share_image = { en = "assets/og-card.jpg", sl = "assets/og-card-sl.jpg" }
 share_image_alt.en = "Aljaž Frančič, Engineer & Researcher, PhD in Computer Science and Informatics"
 share_image_alt.sl = "Aljaž Frančič, inženir in raziskovalec, doktor računalništva in informatike"
 # The person, as structured data describes them (not shown on the page).
@@ -155,7 +155,7 @@ year = 2015
 [[projects]]
 title = "openDAQ"
 url = "https://opendaq.com/"
-image = "opendaq.svg?v=20261106"
+image = "opendaq.svg"
 description.en = "openDAQ™ data acquisition SDK: cross-platform, multi-language DAQ interoperability."
 description.sl = "openDAQ™, razvojni komplet za zajem podatkov: medplatformska in večjezična interoperabilnost naprav za zajem podatkov."
 languages = ["C++", "Python", "C#"]
@@ -164,7 +164,7 @@ tags = ["SDK"]
 [[projects]]
 title = "delta-stream"
 url = "https://github.com/aljazfrancic/delta-stream"
-image = "delta-stream.svg?v=20261106"
+image = "delta-stream.svg"
 description.en = "Pre-registered study of how residual-stream updates travel through depth in six language models: predictable, mostly by architecture, but not stationary across depth."
 description.sl = "Vnaprej registrirana študija o tem, kako potujejo posodobitve rezidualnega toka skozi globino šestih jezikovnih modelov: so napovedljive, večinoma zaradi arhitekture, a po globini niso stacionarne."
 languages = ["Python"]
@@ -173,7 +173,7 @@ tags = ["Interpretability", "Paper"]
 [[projects]]
 title = "edh-deck-diff"
 url = "https://edh-deck-diff.onrender.com/"
-image = "edh-deck-diff.svg?v=20261106b"
+image = "edh-deck-diff.svg"
 description.en = "For players of Magic: The Gathering, the collectible card game: compares your cEDH deck with the latest decks that did well at tournaments and sends a regular report of the cards to add or cut."
 description.sl = "Za igralce zbirateljske igre s kartami Magic: The Gathering: primerja vaš kupček cEDH z najnovejšimi kupčki, ki so se na turnirjih dobro odrezali, in vam redno pošilja poročilo o kartah, ki jih velja dodati ali izločiti."
 languages = ["Python"]
@@ -183,7 +183,7 @@ status = "Public beta"
 [[projects]]
 title = "funding-extract"
 url = "https://github.com/aljazfrancic/funding-extract"
-image = "funding-extract.svg?v=20261106"
+image = "funding-extract.svg"
 description.en = "Where does an LLM actually belong in a web-scale extraction pipeline? A rules → classifier → LLM cascade over funding-round news, with a hard grounding gate and evals."
 description.sl = "Kam v cevovodu za izločanje podatkov s spleta v resnici sodi LLM? Kaskada pravila → klasifikator → LLM nad novicami o investicijskih krogih, s strogim preverjanjem ujemanja z virom in evalvacijami."
 languages = ["Python"]
@@ -192,7 +192,7 @@ tags = ["Machine learning", "LLM"]
 [[projects]]
 title = "myo-keras"
 url = "https://github.com/aljazfrancic/myo-keras"
-image = "myo-keras.svg?v=20261106b"
+image = "myo-keras.svg"
 description.en = "Electromyography gesture classification on Myo armband data, plus a deep investigation into producing grokking on real physiological signal."
 description.sl = "Razvrščanje kretenj iz elektromiografskih podatkov zapestnice Myo in poglobljena raziskava, kako doseči grokking na resničnem fiziološkem signalu."
 languages = ["Python"]
@@ -201,7 +201,7 @@ tags = ["Machine learning", "Electromyography"]
 [[projects]]
 title = "churn"
 url = "https://github.com/aljazfrancic/churn"
-image = "churn.svg?v=20261106"
+image = "churn.svg"
 description.en = "Telco customer churn prediction: EDA, model comparison, threshold tuning and SHAP explanations."
 description.sl = "Napovedovanje odhoda strank telekomunikacijskega operaterja: raziskovalna analiza podatkov, primerjava modelov, nastavitev odločitvenega praga in razlage SHAP."
 languages = ["Python"]
@@ -210,7 +210,7 @@ tags = ["Machine learning"]
 [[projects]]
 title = "live-webcam-ascii-art"
 url = "https://aljazfrancic.github.io/live-webcam-ascii-art"
-image = "live-webcam-ascii-art.svg?v=20261106b"
+image = "live-webcam-ascii-art.svg"
 description.en = "Real-time webcam feed converted to ASCII art, running entirely in the browser with zero dependencies."
 description.sl = "Slika s spletne kamere, v realnem času pretvorjena v ASCII-umetnost; teče v celoti v brskalniku, brez odvisnosti."
 languages = ["JavaScript"]
@@ -219,7 +219,7 @@ live = "Demo"
 [[projects]]
 title = "myo-readings-dataset"
 url = "https://github.com/aljazfrancic/myo-readings-dataset"
-image = "myo-readings-dataset.svg?v=20261106"
+image = "myo-readings-dataset.svg"
 description.en = "Myo armband electromyography dataset of various hand gestures for machine learning."
 description.sl = "Zbirka elektromiografskih signalov različnih kretenj roke, posnetih z zapestnico Myo, za strojno učenje."
 languages = ["Python"]
@@ -228,7 +228,7 @@ tags = ["Machine learning", "Electromyography", "Dataset"]
 [[projects]]
 title = "local-rag"
 url = "https://github.com/aljazfrancic/local-rag"
-image = "local-rag.svg?v=20261106"
+image = "local-rag.svg"
 description.en = "Local RAG pipeline over Slovenian documents: Ollama + ChromaDB, zero frameworks. Every step explicit and readable."
 description.sl = "Lokalni cevovod RAG nad slovenskimi dokumenti: Ollama + ChromaDB, brez ogrodij. Vsak korak je ekspliciten in berljiv."
 languages = ["Python"]
@@ -237,7 +237,7 @@ tags = ["Machine learning", "LLM", "RAG"]
 [[projects]]
 title = "generative-art-gallery"
 url = "https://aljazfrancic.github.io/generative-art-gallery"
-image = "generative-art-gallery.svg?v=20261106b"
+image = "generative-art-gallery.svg"
 description.en = "Interactive gallery of generative art algorithms drawn live with p5.js: flow fields, fractals, the Mandelbrot set, reaction-diffusion and more."
 description.sl = "Interaktivna galerija algoritmov generativne umetnosti, ki s p5.js rišejo v živo: tokovna polja, fraktali, Mandelbrotova množica, reakcijsko-difuzijski vzorci in še več."
 languages = ["JavaScript"]
@@ -246,7 +246,7 @@ live = "Demo"
 [[projects]]
 title = "ev3-myo"
 url = "https://github.com/aljazfrancic/ev3-myo"
-image = "ev3-myo.svg?v=20261106"
+image = "ev3-myo.svg"
 description.en = "LEGO Mindstorms EV3 TRACK3R control using the Myo armband and a neural network for gesture recognition."
 description.sl = "Krmiljenje robota LEGO Mindstorms EV3 TRACK3R z zapestnico Myo in nevronsko mrežo za prepoznavo kretenj."
 languages = ["Java", "Python"]
@@ -255,7 +255,7 @@ tags = ["Machine learning", "Electromyography", "LEGO"]
 [[projects]]
 title = "sudoku-solver"
 url = "https://github.com/aljazfrancic/sudoku-solver"
-image = "sudoku-solver.svg?v=20261106b"
+image = "sudoku-solver.svg"
 description.en = "Find a sudoku in a photo, extract the grid, recognise the digits, solve, and overlay the solution on the image."
 description.sl = "Najde sudoku na fotografiji, izlušči mrežo, prepozna števke, ga reši in rešitev izriše na sliko."
 languages = ["Python"]
@@ -264,7 +264,7 @@ tags = ["Computer vision"]
 [[projects]]
 title = "weight-logger"
 url = "https://github.com/aljazfrancic/weight-logger"
-image = "weight-logger.svg?v=20261106b"
+image = "weight-logger.svg"
 description.en = "Android app for logging and tracking body weight over time."
 description.sl = "Aplikacija za Android za beleženje in spremljanje telesne teže skozi čas."
 languages = ["Kotlin"]
@@ -273,7 +273,7 @@ tags = ["Android"]
 [[projects]]
 title = "stonks-bot"
 url = "https://github.com/aljazfrancic/stonks-bot"
-image = "stonks-bot.svg?v=20261106b"
+image = "stonks-bot.svg"
 description.en = "Discord bot that pulls close prices for crypto and stocks and plots them over the last N days."
 description.sl = "Discord bot, ki pridobi zaključne cene kriptovalut in delnic ter jih prikaže na grafu za zadnjih N dni."
 languages = ["Python"]
@@ -282,7 +282,7 @@ tags = ["Live charts"]
 [[projects]]
 title = "slo-tech-monitor"
 url = "https://github.com/aljazfrancic/slo-tech-monitor"
-image = "slo-tech-monitor.svg?v=20261106b"
+image = "slo-tech-monitor.svg"
 description.en = "Monitor for new job postings on slo-tech.com/delo."
 description.sl = "Spremljanje novih zaposlitvenih oglasov na slo-tech.com/delo."
 languages = ["Python"]
@@ -291,7 +291,7 @@ tags = ["Monitoring"]
 [[projects]]
 title = "8d-audio-homebrew"
 url = "https://github.com/aljazfrancic/8d-audio-homebrew"
-image = "8d-audio-homebrew.svg?v=20261106"
+image = "8d-audio-homebrew.svg"
 description.en = "Converts a regular wav file into an 8d audio wav file."
 description.sl = "Pretvori običajno datoteko wav v datoteko wav z 8d zvokom."
 languages = ["Python"]

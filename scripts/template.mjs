@@ -1,10 +1,21 @@
 // The HTML around the content: page(site, lang) is one language's page, sitemap(site) the sitemap.
 // The content itself comes from site.toml (see the notes at its top).
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 
 export const SITE = "https://aljazfrancic.github.io/";
 const SOURCE = "https://github.com/aljazfrancic/aljazfrancic.github.io";
 // The portrait's address stays exactly this: Google ranks it, in image search too.
 const PORTRAIT = "assets/avatar.jpg?v=20260605";
+
+// A file's address with a fingerprint of its content (?v=…): browsers and caches keep files for a
+// while, and a changed file gets a new address, so nobody sees an old one next to a new page.
+const sources = new URL("../", import.meta.url);
+const fingerprints = new Map();
+const v = (path) => {
+  if (!fingerprints.has(path)) fingerprints.set(path, createHash("sha256").update(readFileSync(new URL(path, sources))).digest("hex").slice(0, 8));
+  return `${path}?v=${fingerprints.get(path)}`;
+};
 
 export const LANGUAGES = {
   en: { code: "en-GB", hreflang: "en", locale: "en_GB", dir: "", name: "English", flag: "gb" },
@@ -80,7 +91,7 @@ export const page = (site, lang) => {
   const title = `${person.name} · ${role}`;
   const updated = site.updated.toISOString();
   const year = updated.slice(0, 4);
-  const shareImage = SITE + t(meta.share_image);
+  const shareImage = SITE + v(t(meta.share_image));
   const school = t(site.education.school);
 
   // A paper or thesis: in italics, marked with its language when that isn't the page's.
@@ -217,12 +228,12 @@ ${Object.values(LANGUAGES).map((language) => `  <link rel="alternate" hreflang="
     // Key "home-theme", not "theme": the project sites under this origin share its localStorage.
     try { const saved = localStorage.getItem("home-theme"); if (saved) document.documentElement.dataset.theme = saved; } catch {}
   </script>
-  <link rel="icon" href="${root}favicon.ico?v=20261110" sizes="32x32">
-  <link rel="icon" href="${root}favicon.svg?v=20261106" type="image/svg+xml">
+  <link rel="icon" href="${root}${v("favicon.ico")}" sizes="32x32">
+  <link rel="icon" href="${root}${v("favicon.svg")}" type="image/svg+xml">
   <link rel="preload" href="${root}assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="${root}assets/fonts/dm-sans-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="${root}styles.css?v=20261110b">
-  <script src="${root}assets/landscape.js?v=20261110b" defer></script>
+  <link rel="stylesheet" href="${root}${v("styles.css")}">
+  <script src="${root}${v("assets/landscape.js")}" defer></script>
 </head>
 <body>
   <a class="skip" href="#content">${esc(t(words.skip))}</a>
@@ -231,9 +242,9 @@ ${Object.values(LANGUAGES).map((language) => `  <link rel="alternate" hreflang="
       <div class="controls">
         <a class="switch switch--lang${lang === "en" ? "" : " switch--end"}" href="${root}${other.dir}" hreflang="${other.hreflang}" lang="${other.hreflang}" title="${other.name}" aria-label="${other.name}">
           <span class="switch__track" aria-hidden="true">
-            <img class="switch__icon switch__flag" src="${root}assets/flags/gb.svg?v=20261013" alt="" width="16" height="16">
-            <img class="switch__icon switch__flag" src="${root}assets/flags/si.svg?v=20261013" alt="" width="16" height="16">
-            <span class="switch__thumb"><img class="switch__flag" src="${root}assets/flags/${L.flag}.svg?v=20261013" alt="" width="24" height="24"></span>
+            <img class="switch__icon switch__flag" src="${root}${v("assets/flags/gb.svg")}" alt="" width="16" height="16">
+            <img class="switch__icon switch__flag" src="${root}${v("assets/flags/si.svg")}" alt="" width="16" height="16">
+            <span class="switch__thumb"><img class="switch__flag" src="${root}${v(`assets/flags/${L.flag}.svg`)}" alt="" width="24" height="24"></span>
           </span>
         </a>
         <label class="switch switch--theme" title="${esc(t(words.theme))}">
@@ -272,7 +283,7 @@ ${Object.values(LANGUAGES).map((language) => `  <link rel="alternate" hreflang="
         </label>
       </div>
       <div class="intro__id">
-        <img src="${root}${PORTRAIT}" srcset="${root}assets/avatar-240.webp?v=20261106 240w" sizes="6.25rem" alt="${esc(t(person.portrait_alt))}" class="intro__avatar" width="160" height="160" fetchpriority="high">
+        <img src="${root}${PORTRAIT}" srcset="${root}${v("assets/avatar-240.webp")} 240w" sizes="6.25rem" alt="${esc(t(person.portrait_alt))}" class="intro__avatar" width="160" height="160" fetchpriority="high">
         <h1 class="intro__name"><span class="intro__line"><span class="intro__type" style="--chars: ${[...person.given_name].length}">${esc(person.given_name)}</span></span> <span class="intro__line"><span class="intro__type" style="--chars: ${[...person.family_name].length}">${esc(person.family_name)}</span></span></h1>
       </div>
       <p class="intro__role">${esc(role)}</p>
@@ -345,7 +356,7 @@ ${site.education.degrees
 ${featured
   .map(
     (project) => `          <a href="${esc(project.url)}" class="card" rel="noopener noreferrer" target="_blank">
-            <img class="card__img" src="${root}assets/projects/${project.image}" alt="" width="720" height="405" loading="lazy" decoding="async">
+            <img class="card__img" src="${root}${v(`assets/projects/${project.image}`)}" alt="" width="720" height="405" loading="lazy" decoding="async">
             <h3 class="card__title">${esc(project.title)}</h3>
             <p class="card__desc">${esc(t(project.description))}</p>
             ${tags(project, "ul", "li")}
@@ -361,7 +372,7 @@ ${more
     (project) => `          <li>${away(
       project.url,
       `
-            <img class="more__img" src="${root}assets/projects/${project.image}" alt="" width="264" height="176" loading="lazy" decoding="async">
+            <img class="more__img" src="${root}${v(`assets/projects/${project.image}`)}" alt="" width="264" height="176" loading="lazy" decoding="async">
             <span class="more__title">${esc(project.title)}</span>
             <span class="more__desc">${esc(t(project.description))}</span>
             ${tags(project, "span", "span")}
