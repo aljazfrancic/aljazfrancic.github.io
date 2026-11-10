@@ -141,7 +141,9 @@
         const k = j - lead; // rows behind the nearest regular one are negative
         const z = zNear + (k - frac) * spacing;
         const s = focal / Math.max(z, 1);
-        const half = Math.ceil(w / 2 / s / spacing) + 1;
+        // Wide enough for the next row's scale as well: the strip between the two is drawn over the
+        // columns they share, and at that row's smaller scale those must still reach both edges.
+        const half = Math.ceil(((w / 2) * (Math.max(z, 1) + spacing)) / focal / spacing) + 1;
         const n = half * 2 + 1;
         let row = rows[j];
         if (!row || row.sx.length < n) {
