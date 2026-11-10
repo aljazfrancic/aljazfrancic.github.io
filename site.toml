@@ -1,0 +1,350 @@
+# Everything the site says, in both languages. `npm run build` turns it into the English page
+# (index.html), the Slovenian one (sl/index.html) and the sitemap; the HTML around the content
+# lives in scripts/template.mjs.
+#
+# - Text that differs by language is a pair: title.en = "…" and title.sl = "…", or
+#   title = { en = "…", sl = "…" }. A plain string is the same on both pages.
+# - In longer text, [words](https://…) is a link (it opens in a new tab), and   is a
+#   non-breaking space. Write & and quotes as they are; the build escapes them.
+# - Project tags and the topics in knows_about are written in English and translated through
+#   [glossary] at the end, since the same ones repeat.
+# - English is British (colour, recognise). No em dashes anywhere: a colon or a comma instead.
+
+# Last change to the content, for search engines (the sitemap and the structured data). Its
+# year is also the one in the footer's ©.
+updated = 2026-11-09
+
+[person]
+name = "Aljaž Frančič"
+given_name = "Aljaž"
+family_name = "Frančič"
+alternate_name = "Aljaz Francic" # the name without the háčeks, as people type it
+role = { en = "Engineer & Researcher", sl = "Inženir in raziskovalec" }
+degree = { en = "PhD in Computer Science and Informatics", sl = "Doktor računalništva in informatike" }
+portrait_alt = { en = "Portrait of Aljaž Frančič", sl = "Portret Aljaža Frančiča" }
+email = "aljaz.francic@gmail.com"
+github = "https://github.com/aljazfrancic"
+linkedin = "https://www.linkedin.com/in/aljazfrancic"
+orcid = "https://orcid.org/0000-0003-4431-2869" # in the structured data only, no button on the page
+cobiss = { en = "https://cris.cobiss.net/ecris/si/en/researcher/code/52032", sl = "https://cris.cobiss.net/ecris/si/sl/researcher/code/52032" }
+
+# What search engines and link previews show.
+[meta]
+description.en = "Aljaž Frančič, engineer and researcher, PhD in Computer Science and Informatics. Machine learning and interpretability research, LLM pipelines, production C++."
+description.sl = "Aljaž Frančič, inženir in raziskovalec, doktor računalništva in informatike. Raziskave strojnega učenja in interpretabilnosti, cevovodi z LLM, produkcijski C++."
+share_description.en = "PhD in Computer Science and Informatics · Engineer & Researcher. Machine learning and interpretability research, LLM pipelines, and production C++ on the openDAQ SDK."
+share_description.sl = "Doktor računalništva in informatike · Inženir in raziskovalec. Raziskave strojnega učenja in interpretabilnosti, cevovodi z LLM in produkcijski C++ pri kompletu openDAQ."
+share_image = { en = "assets/og-card.jpg?v=20261106", sl = "assets/og-card-sl.jpg?v=20261106" }
+share_image_alt.en = "Aljaž Frančič, Engineer & Researcher, PhD in Computer Science and Informatics"
+share_image_alt.sl = "Aljaž Frančič, inženir in raziskovalec, doktor računalništva in informatike"
+# The person, as structured data describes them (not shown on the page).
+summary.en = "Engineer and researcher with a PhD in Computer Science and Informatics. Independent research and development in machine learning, mechanistic interpretability and LLM pipelines; previously production C++ on the openDAQ data acquisition SDK and electromyography research at the University of Maribor."
+summary.sl = "Inženir in raziskovalec z doktoratom iz računalništva in informatike. Samostojne raziskave in razvoj na področju strojnega učenja, mehanistične interpretabilnosti in cevovodov z LLM; prej produkcijski C++ pri razvojnem kompletu za zajem podatkov openDAQ in raziskave elektromiografije na Univerzi v Mariboru."
+knows_about = ["Machine learning", "Mechanistic interpretability", "Large language models", "Retrieval-augmented generation", "Information extraction", "Software engineering", "C++", "Python", "PyTorch", "Data acquisition", "Electromyography", "Signal processing", "Computer vision", "Kotlin", "Android"]
+
+# The page's own words: headings, labels, links.
+[words]
+skip = { en = "Skip to content", sl = "Preskoči na vsebino" }
+theme = { en = "Switch colour theme", sl = "Preklopi barvno temo" }
+sections = { en = "Sections", sl = "Razdelki" }
+profiles = { en = "Profiles and contact", sl = "Profili in stik" }
+about = { en = "About", sl = "O meni" }
+experience = { en = "Experience", sl = "Izkušnje" }
+education = { en = "Education", sl = "Izobrazba" }
+projects = { en = "Projects", sl = "Projekti" }
+more_projects = { en = "More projects", sl = "Drugi projekti" }
+present = { en = "present", sl = "danes" }
+source = { en = "Page source", sl = "Izvorna koda strani" }
+top = { en = "Back to top ↑", sl = "Na vrh ↑" }
+
+[about]
+text.en = "I take ideas all the way to working systems and know what to leave out. I work on problems until they yield, read widely outside the engineering canon, and prefer to find my own errors first."
+text.sl = "Ideje pripeljem vse do delujočih sistemov in vem, kaj izpustiti. Pri problemih vztrajam, dokler ne popustijo, veliko berem tudi izven inženirskega kanona, svoje napake pa raje odkrijem sam, preden jih kdo drug."
+
+# Newest first. `from` and `to` are year-month; without `to`, it runs to the present. Each
+# reference (refs) has a label and either a work (a paper's title, shown in italics, with the
+# language it is written in) or links.
+
+[[experience]]
+title = { en = "Independent Researcher and Developer", sl = "Samostojni raziskovalec in razvijalec" }
+org.en = "Machine learning, mechanistic interpretability & software"
+org.sl = "Strojno učenje, mehanistična interpretabilnost in razvoj programske opreme"
+text.en = "Ran a pre-registered study of cross-layer dynamics in transformer factual recall across six language models, on consumer hardware. Studied grokking in electromyography gesture classifiers. Shipped a Magic: The Gathering cEDH deck-comparison web app, an LLM extraction cascade and other projects."
+text.sl = "Izvedel sem vnaprej registrirano študijo medslojne dinamike pri priklicu dejstev v transformerjih na šestih jezikovnih modelih, v celoti na potrošniški strojni opremi. Proučil sem pojav grokking v klasifikatorjih kretenj iz elektromiografskih podatkov. Razvil sem spletno aplikacijo za primerjavo kupčkov igre Magic: The Gathering v formatu cEDH, kaskado za izločanje podatkov z LLM in druge projekte."
+from = "2026-01"
+
+  [[experience.refs]]
+  label = { en = "Paper", sl = "Članek" }
+  work = { title = "How Residual-Stream Updates Travel Through Depth: A Pre-Registered Study of Cross-Layer Dynamics in Transformer Factual Recall", url = "https://doi.org/10.5281/zenodo.24036253", lang = "en" }
+
+  [[experience.refs]]
+  label = { en = "Web app", sl = "Spletna aplikacija" }
+  links = "[edh-deck-diff](https://edh-deck-diff.onrender.com/)"
+
+  [[experience.refs]]
+  label = { en = "Code", sl = "Koda" }
+  links.en = "[delta-stream](https://github.com/aljazfrancic/delta-stream) · [Grokking study](https://github.com/aljazfrancic/myo-keras) · [funding-extract](https://github.com/aljazfrancic/funding-extract)"
+  links.sl = "[delta-stream](https://github.com/aljazfrancic/delta-stream) · [Študija grokkinga](https://github.com/aljazfrancic/myo-keras) · [funding-extract](https://github.com/aljazfrancic/funding-extract)"
+
+[[experience]]
+title = { en = "Software Engineer", sl = "Programski inženir" }
+org.en = "[openDAQ](https://opendaq.com/) by [Dewesoft](https://dewesoft.com/) and [Hottinger Brüel & Kjær](https://www.hbkworld.com/)"
+org.sl = "[openDAQ](https://opendaq.com/) pod okriljem podjetij [Dewesoft](https://dewesoft.com/) in [Hottinger Brüel & Kjær](https://www.hbkworld.com/)"
+text.en = "Helped shape the open source data acquisition SDK that enables cross-platform, multi-language, and DAQ hardware vendor interoperability. Implemented core C++ features, documentation, CI/CD, release, testing, Python bindings, and metrics dashboards (Grafana/InfluxDB on AWS)."
+text.sl = "Soustvarjal sem odprtokodni razvojni komplet za zajem podatkov, ki omogoča interoperabilnost strojne opreme med operacijskimi sistemi, programskimi jeziki in proizvajalci naprav. Implementiral sem ključne funkcionalnosti v C++ ter skrbel za dokumentacijo, CI/CD, izdaje, testiranje, vezave za Python in nadzorne plošče z metrikami (Grafana/InfluxDB na AWS)."
+from = "2024-01"
+to = "2026-01"
+
+  [[experience.refs]]
+  label = { en = "Website", sl = "Spletna stran" }
+  links = "[opendaq.com](https://opendaq.com/)"
+
+  [[experience.refs]]
+  label = { en = "Code", sl = "Koda" }
+  links = "[openDAQ](https://github.com/openDAQ/openDAQ)"
+
+[[experience]]
+title = { en = "Young Researcher, Teaching Assistant", sl = "Mladi raziskovalec, asistent" }
+org.en = "[University of Maribor](https://www.um.si/en/), [Faculty of Electrical Engineering and Computer Science](https://feri.um.si/en/), [System Software Laboratory](https://lspo.feri.um.si/index-en.php)"
+org.sl = "[Univerza v Mariboru](https://www.um.si/), [Fakulteta za elektrotehniko, računalništvo in informatiko](https://feri.um.si/), [Laboratorij za sistemsko programsko opremo](https://lspo.feri.um.si/index.php)"
+text.en = "Led research in electromyography and teaching. Built end-to-end signal analysis pipelines (MATLAB, R), machine learning models for biosignals (Python, TensorFlow, Keras), and taught computer vision (OpenCV). Supervised students and contributed to peer-reviewed work."
+text.sl = "Vodil sem raziskave na področju elektromiografije in pedagoško delo. Razvil sem celovite cevovode za analizo signalov (MATLAB, R) in modele strojnega učenja za biosignale (Python, TensorFlow, Keras) ter poučeval računalniški vid (OpenCV). Mentoriral sem študente in soprispeval k recenziranim objavam."
+from = "2018-10"
+to = "2022-10"
+
+  [[experience.refs]]
+  label = { en = "Most cited paper", sl = "Najbolj citiran članek" }
+  work = { title = "On the reuse of motor unit filters in high density surface electromyograms recorded at different contraction levels", url = "https://ieeexplore.ieee.org/abstract/document/9513317", lang = "en" }
+
+  [[experience.refs]]
+  label = { en = "Bibliography", sl = "Bibliografija" }
+  links.en = "[COBISS researcher profile](https://cris.cobiss.net/ecris/si/en/researcher/code/52032)"
+  links.sl = "[Profil raziskovalca v sistemu COBISS](https://cris.cobiss.net/ecris/si/sl/researcher/code/52032)"
+
+[education]
+# Shown above the degrees. The structured data also takes it as the alma mater: this text without
+# the links for its name, the last link (the faculty) for its address.
+school.en = "[University of Maribor](https://www.um.si/en/), [Faculty of Electrical Engineering and Computer Science](https://feri.um.si/en/)"
+school.sl = "[Univerza v Mariboru](https://www.um.si/), [Fakulteta za elektrotehniko, računalništvo in informatiko](https://feri.um.si/)"
+
+# Newest first. Thesis titles stay exactly as published, in each language.
+
+[[education.degrees]]
+title = { en = "PhD, Computer Science and Informatics", sl = "Doktorat, Računalništvo in informatika" }
+thesis.title.en = "Software pipeline for computationally efficient and robust estimation of motor unit firing times from high density surface electromyograms"
+thesis.title.sl = "Programski cevovod za računsko učinkovito in robustno ocenjevanje prožilnih trenutkov motoričnih enot iz večkanalnih površinskih elektromiogramov"
+thesis.url = { en = "https://dk.um.si/IzpisGradiva.php?lang=eng&id=84908", sl = "https://dk.um.si/IzpisGradiva.php?lang=slv&id=84908" }
+year = 2023
+
+[[education.degrees]]
+title = { en = "Master’s degree, Computer Science and Information Technologies", sl = "Magisterij, Računalništvo in informacijske tehnologije" }
+thesis.title = { en = "Robot control with a neural network and a muscle-machine interface", sl = "Krmiljenje robota z nevronsko mrežo in vmesnikom mišice-stroj" }
+thesis.url = { en = "https://dk.um.si/IzpisGradiva.php?lang=eng&id=71712", sl = "https://dk.um.si/IzpisGradiva.php?lang=slv&id=71712" }
+year = 2018
+
+[[education.degrees]]
+title = { en = "Erasmus+ student exchange", sl = "Študentska izmenjava Erasmus+" }
+org = { en = "Tampere University, Finland", sl = "Univerza v Tamperah, Finska" }
+year = 2015
+
+# Projects, ordered by how impressive they are, except that openDAQ leads. The first
+# four are the large cards; the rest make the compact list. Previews are SVGs in assets/projects/,
+# drawn in the site's dark palette. `languages` are the programming languages; `live` marks a
+# demo, `status` a pulsing badge.
+
+[[projects]]
+title = "openDAQ"
+url = "https://opendaq.com/"
+image = "opendaq.svg?v=20261106"
+description.en = "openDAQ™ data acquisition SDK: cross-platform, multi-language DAQ interoperability."
+description.sl = "openDAQ™, razvojni komplet za zajem podatkov: medplatformska in večjezična interoperabilnost naprav za zajem podatkov."
+languages = ["C++", "Python", "C#"]
+tags = ["SDK"]
+
+[[projects]]
+title = "delta-stream"
+url = "https://github.com/aljazfrancic/delta-stream"
+image = "delta-stream.svg?v=20261106"
+description.en = "Pre-registered study of how residual-stream updates travel through depth in six language models: predictable, mostly by architecture, but not stationary across depth."
+description.sl = "Vnaprej registrirana študija o tem, kako potujejo posodobitve rezidualnega toka skozi globino šestih jezikovnih modelov: so napovedljive, večinoma zaradi arhitekture, a po globini niso stacionarne."
+languages = ["Python"]
+tags = ["Interpretability", "Paper"]
+
+[[projects]]
+title = "edh-deck-diff"
+url = "https://edh-deck-diff.onrender.com/"
+image = "edh-deck-diff.svg?v=20261106b"
+description.en = "For players of Magic: The Gathering, the collectible card game: compares your cEDH deck with the latest decks that did well at tournaments and sends a regular report of the cards to add or cut."
+description.sl = "Za igralce zbirateljske igre s kartami Magic: The Gathering: primerja vaš kupček cEDH z najnovejšimi kupčki, ki so se na turnirjih dobro odrezali, in vam redno pošilja poročilo o kartah, ki jih velja dodati ali izločiti."
+languages = ["Python"]
+tags = ["Web app"]
+status = "Public beta"
+
+[[projects]]
+title = "funding-extract"
+url = "https://github.com/aljazfrancic/funding-extract"
+image = "funding-extract.svg?v=20261106"
+description.en = "Where does an LLM actually belong in a web-scale extraction pipeline? A rules → classifier → LLM cascade over funding-round news, with a hard grounding gate and evals."
+description.sl = "Kam v cevovodu za izločanje podatkov s spleta v resnici sodi LLM? Kaskada pravila → klasifikator → LLM nad novicami o investicijskih krogih, s strogim preverjanjem ujemanja z virom in evalvacijami."
+languages = ["Python"]
+tags = ["Machine learning", "LLM"]
+
+[[projects]]
+title = "myo-keras"
+url = "https://github.com/aljazfrancic/myo-keras"
+image = "myo-keras.svg?v=20261106b"
+description.en = "Electromyography gesture classification on Myo armband data, plus a deep investigation into producing grokking on real physiological signal."
+description.sl = "Razvrščanje kretenj iz elektromiografskih podatkov zapestnice Myo in poglobljena raziskava, kako doseči grokking na resničnem fiziološkem signalu."
+languages = ["Python"]
+tags = ["Machine learning", "Electromyography"]
+
+[[projects]]
+title = "churn"
+url = "https://github.com/aljazfrancic/churn"
+image = "churn.svg?v=20261106"
+description.en = "Telco customer churn prediction: EDA, model comparison, threshold tuning and SHAP explanations."
+description.sl = "Napovedovanje odhoda strank telekomunikacijskega operaterja: raziskovalna analiza podatkov, primerjava modelov, nastavitev odločitvenega praga in razlage SHAP."
+languages = ["Python"]
+tags = ["Machine learning"]
+
+[[projects]]
+title = "live-webcam-ascii-art"
+url = "https://aljazfrancic.github.io/live-webcam-ascii-art"
+image = "live-webcam-ascii-art.svg?v=20261106b"
+description.en = "Real-time webcam feed converted to ASCII art, running entirely in the browser with zero dependencies."
+description.sl = "Slika s spletne kamere, v realnem času pretvorjena v ASCII-umetnost; teče v celoti v brskalniku, brez odvisnosti."
+languages = ["JavaScript"]
+live = "Demo"
+
+[[projects]]
+title = "myo-readings-dataset"
+url = "https://github.com/aljazfrancic/myo-readings-dataset"
+image = "myo-readings-dataset.svg?v=20261106"
+description.en = "Myo armband electromyography dataset of various hand gestures for machine learning."
+description.sl = "Zbirka elektromiografskih signalov različnih kretenj roke, posnetih z zapestnico Myo, za strojno učenje."
+languages = ["Python"]
+tags = ["Machine learning", "Electromyography", "Dataset"]
+
+[[projects]]
+title = "local-rag"
+url = "https://github.com/aljazfrancic/local-rag"
+image = "local-rag.svg?v=20261106"
+description.en = "Local RAG pipeline over Slovenian documents: Ollama + ChromaDB, zero frameworks. Every step explicit and readable."
+description.sl = "Lokalni cevovod RAG nad slovenskimi dokumenti: Ollama + ChromaDB, brez ogrodij. Vsak korak je ekspliciten in berljiv."
+languages = ["Python"]
+tags = ["Machine learning", "LLM", "RAG"]
+
+[[projects]]
+title = "generative-art-gallery"
+url = "https://aljazfrancic.github.io/generative-art-gallery"
+image = "generative-art-gallery.svg?v=20261106b"
+description.en = "Interactive gallery of generative art algorithms drawn live with p5.js: flow fields, fractals, the Mandelbrot set, reaction-diffusion and more."
+description.sl = "Interaktivna galerija algoritmov generativne umetnosti, ki s p5.js rišejo v živo: tokovna polja, fraktali, Mandelbrotova množica, reakcijsko-difuzijski vzorci in še več."
+languages = ["JavaScript"]
+live = "Demo"
+
+[[projects]]
+title = "ev3-myo"
+url = "https://github.com/aljazfrancic/ev3-myo"
+image = "ev3-myo.svg?v=20261106"
+description.en = "LEGO Mindstorms EV3 TRACK3R control using the Myo armband and a neural network for gesture recognition."
+description.sl = "Krmiljenje robota LEGO Mindstorms EV3 TRACK3R z zapestnico Myo in nevronsko mrežo za prepoznavo kretenj."
+languages = ["Java", "Python"]
+tags = ["Machine learning", "Electromyography", "LEGO"]
+
+[[projects]]
+title = "sudoku-solver"
+url = "https://github.com/aljazfrancic/sudoku-solver"
+image = "sudoku-solver.svg?v=20261106b"
+description.en = "Find a sudoku in a photo, extract the grid, recognise the digits, solve, and overlay the solution on the image."
+description.sl = "Najde sudoku na fotografiji, izlušči mrežo, prepozna števke, ga reši in rešitev izriše na sliko."
+languages = ["Python"]
+tags = ["Computer vision"]
+
+[[projects]]
+title = "weight-logger"
+url = "https://github.com/aljazfrancic/weight-logger"
+image = "weight-logger.svg?v=20261106b"
+description.en = "Android app for logging and tracking body weight over time."
+description.sl = "Aplikacija za Android za beleženje in spremljanje telesne teže skozi čas."
+languages = ["Kotlin"]
+tags = ["Android"]
+
+[[projects]]
+title = "stonks-bot"
+url = "https://github.com/aljazfrancic/stonks-bot"
+image = "stonks-bot.svg?v=20261106b"
+description.en = "Discord bot that pulls close prices for crypto and stocks and plots them over the last N days."
+description.sl = "Discord bot, ki pridobi zaključne cene kriptovalut in delnic ter jih prikaže na grafu za zadnjih N dni."
+languages = ["Python"]
+tags = ["Live charts"]
+
+[[projects]]
+title = "slo-tech-monitor"
+url = "https://github.com/aljazfrancic/slo-tech-monitor"
+image = "slo-tech-monitor.svg?v=20261106b"
+description.en = "Monitor for new job postings on slo-tech.com/delo."
+description.sl = "Spremljanje novih zaposlitvenih oglasov na slo-tech.com/delo."
+languages = ["Python"]
+tags = ["Monitoring"]
+
+[[projects]]
+title = "8d-audio-homebrew"
+url = "https://github.com/aljazfrancic/8d-audio-homebrew"
+image = "8d-audio-homebrew.svg?v=20261106"
+description.en = "Converts a regular wav file into an 8d audio wav file."
+description.sl = "Pretvori običajno datoteko wav v datoteko wav z 8d zvokom."
+languages = ["Python"]
+tags = ["Audio"]
+
+# The delta-stream paper and its code, described for search engines (structured data only; the
+# page links the paper from Experience).
+[paper]
+title = "How Residual-Stream Updates Travel Through Depth: A Pre-Registered Study of Cross-Layer Dynamics in Transformer Factual Recall"
+doi = "10.5281/zenodo.24036253"
+published = 2026-11-06
+version = "1.0"
+lang = "en"
+publisher = { name = "Zenodo", url = "https://zenodo.org/" }
+pdf = "https://zenodo.org/records/24036253/files/Francic2026_Residual-Stream-Updates_v1.0.pdf"
+license = "https://creativecommons.org/licenses/by/4.0/"
+keywords = ["Mechanistic interpretability", "Residual stream", "Transformers", "Sparse autoencoders", "State-space model", "Pre-registration"]
+
+[paper.code]
+name = "delta-stream"
+doi = "10.5281/zenodo.24036211"
+repository = "https://github.com/aljazfrancic/delta-stream"
+language = "Python"
+licenses = ["https://opensource.org/license/mit", "https://creativecommons.org/licenses/by/4.0/"]
+
+# English term = Slovenian term, for project tags, badges and knows_about. The build stops with a
+# list of what's missing when a new term has no entry here.
+[glossary]
+"Android" = "Android"
+"Audio" = "Zvok"
+"C++" = "C++"
+"Computer vision" = "Računalniški vid"
+"Data acquisition" = "Zajem podatkov"
+"Dataset" = "Nabor podatkov"
+"Demo" = "Demo"
+"Electromyography" = "Elektromiografija"
+"Information extraction" = "Izločanje informacij"
+"Interpretability" = "Interpretabilnost"
+"Kotlin" = "Kotlin"
+"Large language models" = "Veliki jezikovni modeli"
+"LEGO" = "LEGO"
+"Live charts" = "Grafi v živo"
+"LLM" = "LLM"
+"Machine learning" = "Strojno učenje"
+"Mechanistic interpretability" = "Mehanistična interpretabilnost"
+"Monitoring" = "Spremljanje"
+"Paper" = "Članek"
+"Public beta" = "Javna beta"
+"Python" = "Python"
+"PyTorch" = "PyTorch"
+"RAG" = "RAG"
+"Retrieval-augmented generation" = "Generiranje, obogateno s pridobivanjem"
+"SDK" = "SDK"
+"Signal processing" = "Obdelava signalov"
+"Software engineering" = "Programsko inženirstvo"
+"Web app" = "Spletna aplikacija"
