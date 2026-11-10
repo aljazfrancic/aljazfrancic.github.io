@@ -753,11 +753,8 @@ h2::before {
   .featured { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
   .more a { grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.15rem 1rem; }
   .section + .section { margin-top: 3.5rem; }
-}
-/* Narrow phones, or a page zoomed far in: each reference label sits above its value. Side by
-   side, the label left less room than a title's longest word needs, and the page scrolled
-   sideways. */
-@media (max-width: 22em) {
+  /* Each reference label sits above its value: side by side, a long label squeezed the titles
+     into a narrow column, and on the narrowest screens pushed the page wider than the screen. */
   .refs { grid-template-columns: minmax(0, 1fr); }
   .refs dd + dt { margin-top: 0.4rem; }
 }
