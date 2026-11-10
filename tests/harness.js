@@ -3,19 +3,23 @@
 // window.__errors instead: uncaught errors (a worker's included, they bubble up to the page),
 // rejected promises, resources that failed to load, and console.error calls. The scripts of
 // the workers the page starts go in window.__workers, which is how a test sees that the
-// backdrop draws in one, and the times its frames were drawn (see harness-worker.js) in
-// window.__frames.
+// backdrop draws in one, and the times its frames were drawn and what the page told its worker
+// (see harness-worker.js) in window.__frames and window.__told.
 (() => {
   const errors = (window.__errors = []);
   const workers = (window.__workers = []);
   window.__frames = [];
+  window.__told = [];
   if (window.Worker) {
     window.Worker = new Proxy(window.Worker, {
       construct(Worker, args) {
         workers.push(String(args[0]));
         const worker = new Worker(...args);
         worker.addEventListener("message", ({ data }) => {
-          if (data && data.harnessFrames) window.__frames = data.harnessFrames;
+          if (data && data.harnessFrames) {
+            window.__frames = data.harnessFrames;
+            window.__told = data.harnessTold;
+          }
         });
         return worker;
       },

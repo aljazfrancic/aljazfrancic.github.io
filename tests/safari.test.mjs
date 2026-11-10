@@ -218,9 +218,13 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
         const end = Date.now() + 45_000;
         while (!(await flying()) && Date.now() < end) await sleep(500);
         if (!(await flying())) {
-          const log = await run("return window.__frames");
+          const { log, told, page } = await run(`return {
+            log: window.__frames,
+            told: window.__told,
+            page: { visibility: document.visibilityState, idleCallbacks: typeof requestIdleCallback, readyState: document.readyState },
+          }`);
           const gaps = log.slice(1).map((t, i) => t - log[i]).filter((gap) => gap > 200);
-          assert.fail(`the backdrop should keep drawing new frames: ${log.length - start} new in 45 s (frames so far ${log.length}, last at ${log.at(-1)} ms, pauses ${gaps.join(", ")} ms)`);
+          assert.fail(`the backdrop should keep drawing new frames: ${log.length - start} new in 45 s (frames so far ${log.length}, last at ${log.at(-1)} ms, pauses ${gaps.join(", ")} ms); its worker was told: ${told.join(" ")}; the page: ${JSON.stringify(page)}`);
         }
         // And it reaches the screen. Only the backdrop on screen: hiding it changes the screen,
         // and it moves (two screenshots in a row differ; polled, for the same reason).
