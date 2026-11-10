@@ -10,9 +10,9 @@
 // backdrop's frames. On a failure, a screenshot lands in test-results/safari/.
 //
 // The backdrop's motion is checked through its frame log: it keeps flying, or, on a Mac set to
-// reduce motion (some of GitHub's runners are), it holds a still frame. Its pixels are checked
-// only where a canvas shows: on some of GitHub's macOS runners Safari shows none at all, not even
-// a red square drawn on a plain one (they're virtual machines without a GPU).
+// reduce motion (GitHub's runners are), it holds a still frame. Its pixels are checked only where
+// Safari shows a canvas drawn from a worker: on some of GitHub's macOS runners it shows no canvas
+// at all, on others only canvases drawn on the page (they're virtual machines without a GPU).
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -87,9 +87,10 @@ const press = async (selector, effect) => {
   await waitFor(effect, `clicking ${selector} should change the page`, 3000);
 };
 
-// Can this browser show a canvas at all? A red square drawn on a plain canvas must change the
-// screenshot. Everything else is hidden meanwhile (the name's cursor blinks, the backdrop may
-// move), so the square is the only thing that can change it. Asked once per session.
+// Can this browser show a canvas drawn from a worker, the way the backdrop is drawn? A red square
+// drawn on one, frame after frame, must change the screenshot within three seconds. Everything
+// else is hidden meanwhile (the name's cursor blinks, the backdrop may move), so the square is
+// the only thing that can change it. Asked once per session.
 let canvasShows;
 const probeCanvas = async () => {
   await run(`const style = document.createElement("style");
@@ -102,13 +103,17 @@ const probeCanvas = async () => {
     canvas.id = "probe";
     canvas.width = canvas.height = 100;
     canvas.style.cssText = "position: fixed; left: 0; top: 0; width: 100px; height: 100px; z-index: 9";
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "red";
-    ctx.fillRect(0, 0, 100, 100);
-    document.body.append(canvas);`);
-  await sleep(300);
-  const shows = before !== (await driver.takeScreenshot());
-  await run('document.getElementById("probe").remove(); document.getElementById("probe-style").remove();');
+    document.body.append(canvas);
+    const code = "onmessage = ({ data }) => { const ctx = data.getContext('2d'); const draw = () => { ctx.fillStyle = 'red'; ctx.fillRect(0, 0, 100, 100); requestAnimationFrame(draw); }; draw(); };";
+    window.probeWorker = new Worker(URL.createObjectURL(new Blob([code], { type: "text/javascript" })));
+    const offscreen = canvas.transferControlToOffscreen();
+    window.probeWorker.postMessage(offscreen, [offscreen]);`);
+  let shows = false;
+  for (let tries = 0; tries < 10 && !shows; tries++) {
+    await sleep(300);
+    shows = before !== (await driver.takeScreenshot());
+  }
+  await run('window.probeWorker.terminate(); document.getElementById("probe").remove(); document.getElementById("probe-style").remove();');
   return shows;
 };
 
@@ -176,8 +181,8 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
       calm ??= await run("return matchMedia('(prefers-reduced-motion: reduce)').matches");
       canvasShows ??= await probeCanvas();
       if (path === "/") {
-        if (calm) note("This Mac asks for reduced motion (some of GitHub's macOS runners do): checked that the backdrop holds a still frame instead of flying.");
-        if (!canvasShows) note("This Safari shows no canvas at all, not even a plain red square (on GitHub's macOS runners: no GPU). Checked through the backdrop's frame log only; its pixels aren't checked here (the Chromium, Firefox and WebKit job checks those).");
+        if (calm) note("This Mac asks for reduced motion (GitHub's macOS runners do): checked that the backdrop holds a still frame instead of flying.");
+        if (!canvasShows) note("This Safari doesn't show a canvas drawn from a worker, not even a plain red square (some of GitHub's macOS runners: no GPU). Checked through the backdrop's frame log only; its pixels aren't checked here (the Chromium, Firefox and WebKit job checks those).");
       }
 
       if (calm) {
