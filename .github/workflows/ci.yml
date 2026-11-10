@@ -71,12 +71,12 @@ jobs:
       fail-fast: false
       matrix:
         form-factor: [mobile, desktop]
+    # In Playwright's image too: Lighthouse runs in Playwright's pinned Chromium.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
       - run: npm ci
       - name: Unpack the build
         uses: actions/download-artifact@v8

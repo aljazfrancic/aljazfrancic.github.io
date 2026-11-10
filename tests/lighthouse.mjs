@@ -11,9 +11,10 @@
 //     (Total Blocking Time is the one that broke before: the backdrop drawing on the page's own
 //     thread.)
 // A median performance score under 100 is a warning only.
-import * as chromeLauncher from "chrome-launcher";
-import { mkdir, writeFile } from "node:fs/promises";
+import { chromium } from "@playwright/test";
 import { appendFileSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
+import { createServer } from "node:net";
 import lighthouse from "lighthouse";
 import desktopConfig from "lighthouse/core/config/desktop-config.js";
 import { serve } from "../scripts/serve.mjs";
@@ -46,28 +47,27 @@ const median = (values) => {
 const show = (id, value) => (id === "cumulative-layout-shift" ? value.toFixed(3) : `${Math.round(value)} ms`);
 const score = (lhr, id) => Math.round(lhr.categories[id].score * 100);
 
-// Chrome now and then fails to start on a CI machine ("waiting for dynamic debugging port"):
-// up to three tries.
-const launch = async () => {
-  for (let attempt = 1; ; attempt++) {
-    try {
-      return await chromeLauncher.launch({ chromeFlags: ["--headless=new", ...(CI ? ["--no-sandbox"] : [])] });
-    } catch (error) {
-      if (attempt === 3) throw error;
-      console.log(`Chrome didn't start (${error.message}), trying again.`);
-    }
-  }
-};
+// Each run in a fresh browser: Playwright's own Chromium, the version pinned with @playwright/test
+// and started the same way as for the browser tests. Lighthouse attaches to it through a
+// debugging port (a free one, picked here).
+const freePort = () =>
+  new Promise((resolve) => {
+    const probe = createServer().listen(0, "127.0.0.1", () => {
+      const { port } = probe.address();
+      probe.close(() => resolve(port));
+    });
+  });
 
 const audit = async (url, factor) => {
-  const chrome = await launch();
+  const port = await freePort();
+  const browser = await chromium.launch({ channel: "chromium", args: [`--remote-debugging-port=${port}`] });
   try {
-    const flags = { port: chrome.port, output: "html", logLevel: "error", onlyCategories: ["performance", ...STRICT] };
+    const flags = { port, output: "html", logLevel: "error", onlyCategories: ["performance", ...STRICT] };
     const result = await lighthouse(url, flags, factor === "desktop" ? desktopConfig : undefined);
     if (result.lhr.runtimeError) throw new Error(`${url}: ${result.lhr.runtimeError.message}`);
     return result;
   } finally {
-    chrome.kill();
+    await browser.close();
   }
 };
 
