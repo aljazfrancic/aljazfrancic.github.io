@@ -754,6 +754,13 @@ h2::before {
   .more a { grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.15rem 1rem; }
   .section + .section { margin-top: 3.5rem; }
 }
+/* Narrow phones, or a page zoomed far in: each reference label sits above its value. Side by
+   side, the label left less room than a title's longest word needs, and the page scrolled
+   sideways. */
+@media (max-width: 22em) {
+  .refs { grid-template-columns: minmax(0, 1fr); }
+  .refs dd + dt { margin-top: 0.4rem; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
