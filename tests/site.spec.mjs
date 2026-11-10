@@ -1,5 +1,8 @@
 // How the site behaves, run in each engine (Chromium, Firefox, WebKit): see playwright.config.mjs.
 import { expect, test } from "@playwright/test";
+import { createRequire } from "node:module";
+
+const AXE = createRequire(import.meta.url).resolve("axe-core/axe.min.js");
 
 const PAGES = [
   { path: "/", lang: "en-GB" },
@@ -187,3 +190,33 @@ test("the language switch leads to the Slovenian page and back", async ({ page }
   await expect(page).toHaveURL(/:\d+\/$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "en-GB");
 });
+
+// axe-core's rules (WCAG 2 A and AA, and its best practices) on both pages, light and dark, at a
+// phone's and a desktop's width. The grain and the backdrop sit behind every text and axe can't
+// see through them (it would leave every text's contrast "to review"), so they're hidden for the
+// scan, which then measures each text against the page's own background. Anything axe still
+// can't decide fails too, so a new layer can't quietly switch the contrast check off.
+for (const scheme of ["light", "dark"]) {
+  test.describe(`accessibility, ${scheme} theme`, () => {
+    test.use({ colorScheme: scheme });
+
+    for (const { path } of PAGES) {
+      test(`${path}: axe finds nothing at 390 and 1280 px`, async ({ page }) => {
+        for (const width of [390, 1280]) {
+          await page.setViewportSize({ width, height: 900 });
+          await page.goto(path);
+          await settle(page);
+          await page.addStyleTag({ content: "body::before, body::after, canvas.backdrop { display: none !important; }" });
+          await page.addScriptTag({ path: AXE });
+          const { violations, undecided } = await page.evaluate(async () => {
+            const result = await window.axe.run(document);
+            const describe = (rule) => `${rule.id}: ${rule.help} (${rule.nodes.length}×, first ${rule.nodes[0].target.join(" ")})`;
+            return { violations: result.violations.map(describe), undecided: result.incomplete.map(describe) };
+          });
+          expect(violations, `${width} px`).toEqual([]);
+          expect(undecided, `${width} px: what axe couldn't decide`).toEqual([]);
+        }
+      });
+    }
+  });
+}
