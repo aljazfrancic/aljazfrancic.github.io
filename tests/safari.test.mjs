@@ -133,9 +133,15 @@ const press = async (selector, effect) => {
 };
 
 // Can this browser show a canvas at all? A red square drawn on a plain canvas must change the
-// screenshot. Asked once per session.
+// screenshot. Everything else is hidden meanwhile (the name's cursor blinks, the backdrop may
+// move), so the square is the only thing that can change it. Asked once per session.
 let canvasShows;
 const probeCanvas = async () => {
+  await run(`const style = document.createElement("style");
+    style.id = "probe-style";
+    style.textContent = ".page, canvas.backdrop { visibility: hidden !important; }";
+    document.head.append(style);`);
+  await sleep(300);
   const before = await driver.takeScreenshot();
   await run(`const canvas = document.createElement("canvas");
     canvas.id = "probe";
@@ -147,7 +153,7 @@ const probeCanvas = async () => {
     document.body.append(canvas);`);
   await sleep(300);
   const shows = before !== (await driver.takeScreenshot());
-  await run('document.getElementById("probe").remove()');
+  await run('document.getElementById("probe").remove(); document.getElementById("probe-style").remove();');
   return shows;
 };
 
