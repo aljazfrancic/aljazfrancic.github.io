@@ -72,6 +72,7 @@ const json = (value, indent) => {
 };
 
 const doi = (id) => `https://doi.org/${id}`;
+const orcid = (id) => `https://orcid.org/${id}`;
 
 export const page = (site, lang) => {
   const L = LANGUAGES[lang];
@@ -152,7 +153,8 @@ export const page = (site, lang) => {
         alumniOf: { "@type": "CollegeOrUniversity", name: plain(school), url: lastLink(school) },
         knowsAbout: meta.knows_about.map(term),
         knowsLanguage: Object.values(LANGUAGES).map((language) => language.hreflang),
-        sameAs: [person.github, person.linkedin, person.orcid, t(person.cobiss)],
+        identifier: { "@type": "PropertyValue", propertyID: "ORCID", value: person.orcid, url: orcid(person.orcid) },
+        sameAs: [person.github, person.linkedin, orcid(person.orcid), t(person.cobiss)],
       },
       {
         "@type": "ScholarlyArticle",
@@ -220,6 +222,7 @@ export const page = (site, lang) => {
   <link rel="canonical" href="${url}">
 ${Object.values(LANGUAGES).map((language) => `  <link rel="alternate" hreflang="${language.hreflang}" href="${SITE + language.dir}">`).join("\n")}
   <link rel="alternate" hreflang="x-default" href="${SITE}">
+  <link rel="me" href="${orcid(person.orcid)}">
   <script type="application/ld+json">
   ${json(graph, 2).replaceAll("<", "\\u003c")}
   </script>

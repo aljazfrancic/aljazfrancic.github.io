@@ -25,7 +25,7 @@ portrait_alt = { en = "Portrait of Aljaž Frančič", sl = "Portret Aljaža Fran
 email = "aljaz.francic@gmail.com"
 github = "https://github.com/aljazfrancic"
 linkedin = "https://www.linkedin.com/in/aljazfrancic"
-orcid = "https://orcid.org/0000-0003-4431-2869" # in the structured data only, no button on the page
+orcid = "0000-0003-4431-2869" # in the metadata only (structured data, rel="me"), no button on the page
 cobiss = { en = "https://cris.cobiss.net/ecris/si/en/researcher/code/52032", sl = "https://cris.cobiss.net/ecris/si/sl/researcher/code/52032" }
 
 # What search engines and link previews show.
