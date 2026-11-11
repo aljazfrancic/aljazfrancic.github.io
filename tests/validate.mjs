@@ -17,6 +17,8 @@ const files = (await readdir(dist, { recursive: true }))
 try {
   execFileSync("java", ["-jar", vnu, "--errors-only", "--also-check-svg", ...files], { stdio: "inherit" });
   console.log(`Valid: ${files.length} files (pages and SVGs).`);
-} catch {
+} catch (error) {
+  // The validator has already listed what it found. When it couldn't start at all, say why.
+  if (error.status == null) console.error(error.code === "ENOENT" ? "Java not found: the W3C validator needs it." : `The validator didn't run: ${error.message}`);
   process.exit(1);
 }
