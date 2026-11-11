@@ -47,9 +47,10 @@ const rich = (text) => {
 const plain = (text) => text.replace(LINK, "$1");
 const lastLink = (text) => [...text.matchAll(LINK)].at(-1)?.[2];
 
-// Content for one language: a plain value is the same in both, a { en, sl } pair differs.
+// Content for one language: a plain value is the same in both, a { en, sl } pair differs. A pair
+// with only one of the two still counts as a pair, so the missing text stops the build.
 const pick = (value, lang) => {
-  const pair = value !== null && typeof value === "object" && !Array.isArray(value) && "en" in value;
+  const pair = value !== null && typeof value === "object" && !Array.isArray(value) && Object.keys(LANGUAGES).some((code) => code in value);
   if (!pair) return value;
   if (value[lang] === undefined) throw new Error(`No ${lang} text for ${JSON.stringify(value)}`);
   return value[lang];
