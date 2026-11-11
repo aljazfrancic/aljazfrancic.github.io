@@ -432,7 +432,12 @@ body::after {
 .switch__flag {
   display: block;
   border-radius: 50%;
+  /* The flags keep their real proportions (3:5, 1:2); the circle shows a square of each. */
+  object-fit: cover;
 }
+/* Slovenia's coat of arms sits half the flag's height in from the hoist, so a square taken from
+   the left edge has it in the middle. */
+.switch__flag--si { object-position: left; }
 .switch__icon.switch__flag {
   width: 1rem;
   height: 1rem;

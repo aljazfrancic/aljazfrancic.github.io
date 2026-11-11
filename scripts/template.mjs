@@ -245,9 +245,9 @@ ${Object.values(LANGUAGES).map((language) => `  <link rel="alternate" hreflang="
       <div class="controls">
         <a class="switch switch--lang${lang === "en" ? "" : " switch--end"}" href="${root}${other.dir}" hreflang="${other.hreflang}" lang="${other.hreflang}" title="${other.name}" aria-label="${other.name}">
           <span class="switch__track" aria-hidden="true">
-            <img class="switch__icon switch__flag" src="${root}${v("assets/flags/gb.svg")}" alt="" width="16" height="16">
-            <img class="switch__icon switch__flag" src="${root}${v("assets/flags/si.svg")}" alt="" width="16" height="16">
-            <span class="switch__thumb"><img class="switch__flag" src="${root}${v(`assets/flags/${L.flag}.svg`)}" alt="" width="24" height="24"></span>
+            <img class="switch__icon switch__flag switch__flag--gb" src="${root}${v("assets/flags/gb.svg")}" alt="" width="16" height="16">
+            <img class="switch__icon switch__flag switch__flag--si" src="${root}${v("assets/flags/si.svg")}" alt="" width="16" height="16">
+            <span class="switch__thumb"><img class="switch__flag switch__flag--${L.flag}" src="${root}${v(`assets/flags/${L.flag}.svg`)}" alt="" width="24" height="24"></span>
           </span>
         </a>
         <label class="switch switch--theme" title="${esc(t(words.theme))}">
