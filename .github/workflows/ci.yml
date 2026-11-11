@@ -90,11 +90,17 @@ jobs:
           name: lighthouse-${{ matrix.form-factor }}
           path: lighthouse-reports/
 
+  # Twice, side by side: with the Mac's Reduce Motion on (the backdrop holds a still frame) and
+  # off (it flies). GitHub's macOS runners come with it on.
   safari:
-    name: Safari (macOS)
+    name: Safari (macOS, Reduce Motion ${{ matrix.reduced-motion }})
     needs: build
     runs-on: macos-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        reduced-motion: ["on", "off"]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -108,11 +114,15 @@ jobs:
           name: github-pages
       - run: mkdir dist && tar -xf artifact.tar -C dist
       - run: sudo safaridriver --enable
+      - name: Set Reduce Motion ${{ matrix.reduced-motion }}
+        run: defaults write com.apple.universalaccess reduceMotion -bool ${{ matrix.reduced-motion == 'on' }}
       - run: npm run safari
+        env:
+          REDUCED_MOTION: ${{ matrix.reduced-motion }}
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: safari-screenshots
+          name: safari-screenshots-${{ matrix.reduced-motion }}
           path: test-results/safari/
 
   deploy:

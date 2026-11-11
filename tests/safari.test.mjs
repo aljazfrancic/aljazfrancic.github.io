@@ -4,15 +4,17 @@
 //   sudo safaridriver --enable        once per Mac
 //   npm run build && npm run safari   Safari
 //   SAFARI=chrome npm run safari      the same tests in Chrome, to work on them away from a Mac
+//   REDUCED_MOTION=on npm run safari  also check that Safari sees Reduce Motion on (or off)
 //
 // WebDriver can't read Safari's console, so the pages are served with tests/harness.js, which
 // collects their errors in window.__errors, and with tests/harness-worker.js, which logs the
 // backdrop's frames. On a failure, a screenshot lands in test-results/safari/.
 //
 // The backdrop's motion is checked through its frame log: it keeps flying, or, on a Mac set to
-// reduce motion (GitHub's runners are), it holds a still frame. Its pixels are checked only where
-// Safari shows a canvas drawn from a worker: on some of GitHub's macOS runners it shows no canvas
-// at all, on others only canvases drawn on the page (they're virtual machines without a GPU).
+// reduce motion, it holds a still frame (CI runs both). Only the still frame's pixels are checked,
+// and only where Safari shows a canvas drawn from a worker. GitHub's macOS runners are virtual
+// machines without a GPU: some show no canvas at all, some only canvases drawn on the page, and
+// on one a worker's canvas that kept changing froze on screen while its frames kept coming.
 import assert from "node:assert/strict";
 import { appendFileSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -179,10 +181,12 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
       await waitFor(async () => (await frames()) > 0, "the backdrop should draw its first frames");
 
       calm ??= await run("return matchMedia('(prefers-reduced-motion: reduce)').matches");
-      canvasShows ??= await probeCanvas();
+      if (process.env.REDUCED_MOTION) assert.equal(calm, process.env.REDUCED_MOTION === "on", `Safari should see Reduce Motion ${process.env.REDUCED_MOTION}, as this run set it`);
+      if (calm) canvasShows ??= await probeCanvas();
       if (path === "/") {
-        if (calm) note("This Mac asks for reduced motion (GitHub's macOS runners do): checked that the backdrop holds a still frame instead of flying.");
-        if (!canvasShows) note("This Safari doesn't show a canvas drawn from a worker, not even a plain red square (some of GitHub's macOS runners: no GPU). Checked through the backdrop's frame log only; its pixels aren't checked here (the Chromium, Firefox and WebKit job checks those).");
+        if (calm) note("Reduce Motion is on: checked that the backdrop holds a still frame instead of flying.");
+        else note("Reduce Motion is off: checked through the backdrop's frame log that it keeps flying. Its pixels and its motion on screen aren't checked in Safari (on GitHub's virtual Macs a canvas that keeps changing doesn't reliably reach the screen); the Chromium, Firefox and WebKit job checks those.");
+        if (calm && !canvasShows) note("This Safari doesn't show a canvas drawn from a worker, not even a plain red square (some of GitHub's macOS runners: no GPU). The still frame is checked through the frame log only; its pixels aren't checked here.");
       }
 
       if (calm) {
@@ -214,25 +218,13 @@ describe(`Safari (${TARGET})`, { timeout: 15 * 60_000 }, () => {
         }
       }
 
-      if (canvasShows) {
-        // And it reaches the screen. Only the backdrop on screen: hiding it changes the screen.
+      if (calm && canvasShows) {
+        // The still frame reaches the screen. Only the backdrop on screen: hiding it changes it.
         await addStyle(".page { visibility: hidden !important; }");
         const shown = await driver.takeScreenshot();
         await addStyle("canvas.backdrop { visibility: hidden !important; }");
         assert.notEqual(shown, await driver.takeScreenshot(), "the backdrop canvas should have the terrain drawn on it");
         await addStyle("canvas.backdrop { visibility: visible !important; }");
-        // Flying, it moves there too (two screenshots in a row differ; polled, for the reason above).
-        if (!calm) {
-          await waitFor(
-            async () => {
-              const before = await driver.takeScreenshot();
-              await sleep(400);
-              return before !== (await driver.takeScreenshot());
-            },
-            "the backdrop should be moving on screen",
-            20_000,
-          );
-        }
       }
 
       assert.deepEqual(await errors(), []);
