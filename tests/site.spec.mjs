@@ -230,48 +230,48 @@ test.describe("from the keyboard", () => {
   test.use({ reducedMotion: "reduce" });
 
   for (const { path } of PAGES) {
-  test(`${path} works from the keyboard, with a visible focus ring at every stop`, async ({ page }) => {
-    await page.goto(path);
-    await settle(page);
-    const focused = () =>
-      page.evaluate(() => {
-        const element = document.activeElement;
-        if (!element || element === document.body) return null;
-        const ring = element.closest(".switch")?.querySelector(".switch__track") ?? element;
-        const style = getComputedStyle(ring);
-        const box = element.getBoundingClientRect();
-        return {
-          name: `${element.tagName.toLowerCase()} "${(element.getAttribute("aria-label") || element.textContent).trim().slice(0, 40)}"`,
-          ring: style.outlineStyle !== "none" && parseFloat(style.outlineWidth) >= 1,
-          inView: box.bottom > 0 && box.top < innerHeight && box.right > 0 && box.left < innerWidth,
-        };
-      });
+    test(`${path} works from the keyboard, with a visible focus ring at every stop`, async ({ page }) => {
+      await page.goto(path);
+      await settle(page);
+      const focused = () =>
+        page.evaluate(() => {
+          const element = document.activeElement;
+          if (!element || element === document.body) return null;
+          const ring = element.closest(".switch")?.querySelector(".switch__track") ?? element;
+          const style = getComputedStyle(ring);
+          const box = element.getBoundingClientRect();
+          return {
+            name: `${element.tagName.toLowerCase()} "${(element.getAttribute("aria-label") || element.textContent).trim().slice(0, 40)}"`,
+            ring: style.outlineStyle !== "none" && parseFloat(style.outlineWidth) >= 1,
+            inView: box.bottom > 0 && box.top < innerHeight && box.right > 0 && box.left < innerWidth,
+          };
+        });
 
-    await page.keyboard.press("Tab");
-    const skip = await focused();
-    expect(skip?.name).toMatch(/^a "/);
-    expect(await page.evaluate(() => document.activeElement.classList.contains("skip")), "the first Tab reaches the skip link").toBe(true);
-    expect(skip.inView, "the skip link shows once focused").toBe(true);
-    expect(skip.ring).toBe(true);
-    await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/#content$/);
-    await expect.poll(() => page.evaluate(() => document.getElementById("content").getBoundingClientRect().top < innerHeight)).toBe(true);
-
-    await page.evaluate(() => document.activeElement.blur());
-    const stops = await page.locator("a[href], input, button").count();
-    const missing = [];
-    for (let i = 0; i < stops; i++) {
       await page.keyboard.press("Tab");
-      let stop = await focused();
-      if (!stop) break; // past the last stop, into the browser's own controls
-      // WebKit scrolls the focused link into view on its next rendering update, a moment later.
-      for (let wait = 0; !stop.inView && wait < 20; wait++) {
-        await page.waitForTimeout(100);
-        stop = await focused();
+      const skip = await focused();
+      expect(skip?.name).toMatch(/^a "/);
+      expect(await page.evaluate(() => document.activeElement.classList.contains("skip")), "the first Tab reaches the skip link").toBe(true);
+      expect(skip.inView, "the skip link shows once focused").toBe(true);
+      expect(skip.ring).toBe(true);
+      await page.keyboard.press("Enter");
+      await expect(page).toHaveURL(/#content$/);
+      await expect.poll(() => page.evaluate(() => document.getElementById("content").getBoundingClientRect().top < innerHeight)).toBe(true);
+
+      await page.evaluate(() => document.activeElement.blur());
+      const stops = await page.locator("a[href], input, button").count();
+      const missing = [];
+      for (let i = 0; i < stops; i++) {
+        await page.keyboard.press("Tab");
+        let stop = await focused();
+        if (!stop) break; // past the last stop, into the browser's own controls
+        // WebKit scrolls the focused link into view on its next rendering update, a moment later.
+        for (let wait = 0; !stop.inView && wait < 20; wait++) {
+          await page.waitForTimeout(100);
+          stop = await focused();
+        }
+        if (!stop.ring || !stop.inView) missing.push(`${stop.name}: ${stop.ring ? "" : "no focus ring "}${stop.inView ? "" : "not scrolled into view"}`);
       }
-      if (!stop.ring || !stop.inView) missing.push(`${stop.name}: ${stop.ring ? "" : "no focus ring "}${stop.inView ? "" : "not scrolled into view"}`);
-    }
-    expect(missing).toEqual([]);
-  });
+      expect(missing).toEqual([]);
+    });
   }
 });
