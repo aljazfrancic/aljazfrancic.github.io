@@ -148,12 +148,12 @@ test("the sitemap lists both pages with their language alternates", async ({ req
 // fonts and images as they are. Each budget leaves some room over today's size (in brackets).
 const KB = 1024;
 const BUDGETS = {
-  page: 12 * KB, // each page's HTML (7.8 and 8.4 KB)
+  page: 12 * KB, // each page's HTML (7.7 and 8.2 KB)
   css: 10 * KB, // styles.css (7.5 KB)
-  js: 10 * KB, // the backdrop's script (7.3 KB)
-  preview: 30 * KB, // each project preview SVG (at most 22.8 KB)
-  shareCard: 300 * KB, // each share card: WhatsApp shows no preview of a bigger one (162 KB)
-  firstLoad: 450 * KB, // all a first visit downloads by the time the page has loaded (322 KB in English, 388 KB in Slovenian, which needs the fonts' extra letters)
+  js: 10 * KB, // the backdrop's script (7.2 KB)
+  preview: 30 * KB, // each project preview SVG (at most 22.2 KB)
+  shareCard: 300 * KB, // each share card: WhatsApp shows no preview of a bigger one (at most 159 KB)
+  firstLoad: 450 * KB, // all a first visit downloads by the time the page has loaded (at most 314 KB in English and 379 KB in Slovenian, which needs the fonts' extra letters)
 };
 
 test("every file stays within its size budget", async () => {
