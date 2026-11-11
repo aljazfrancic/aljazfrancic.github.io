@@ -10,7 +10,6 @@ export default defineConfig({
   outputDir: "../test-results",
   fullyParallel: true,
   forbidOnly: CI,
-  retries: CI ? 1 : 0, // a retried pass still shows as "flaky" in the report
   reporter: CI ? [["github"], ["list"], ["html", { open: "never", outputFolder: "../playwright-report" }]] : "list",
   use: { baseURL: `http://127.0.0.1:${PORT}` },
   webServer: {
