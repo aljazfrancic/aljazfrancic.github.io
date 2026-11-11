@@ -519,7 +519,7 @@ h2::before {
 .entry--compact .entry__org { margin-bottom: 0; }
 .entry--compact .entry__body > p:last-child { margin-top: 0.3rem; }
 
-/* Titles of works, and a paper still to come: italic. */
+/* Titles of works (papers, theses): italic. */
 .work { font-style: italic; color: var(--text); }
 
 .refs {
