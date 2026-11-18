@@ -129,7 +129,8 @@ export const page = (site, lang) => {
         name: title,
         inLanguage: L.code,
         isPartOf: { "@id": `${SITE}#website` },
-        dateModified: updated,
+        // A DateTime, as Google reads this property: a date alone is "invalid". Midnight UTC that day.
+        dateModified: `${updated}T00:00:00Z`,
         mainEntity: { "@id": `${SITE}#person` },
       },
       {

@@ -112,6 +112,8 @@ for (const { path, url, lang, locale, alternate } of PAGES) {
     const profile = graph.find((node) => node["@type"] === "ProfilePage");
     expect(profile.url).toBe(url);
     expect(profile.inLanguage).toBe(lang);
+    // Google reads dateModified as a DateTime and flags a date alone as invalid.
+    expect(profile.dateModified).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})$/);
     const defined = new Set();
     const referenced = new Set();
     const walk = (value) => {
