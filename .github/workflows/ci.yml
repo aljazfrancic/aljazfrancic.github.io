@@ -42,7 +42,7 @@ jobs:
     # them on the runner fetches 100+ MB of system packages, at times very slowly). Its version
     # must match @playwright/test in package.json; user 1001 is the runner's, who owns the files.
     container:
-      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      image: mcr.microsoft.com/playwright:v1.65.1-noble
       options: --user 1001
     steps:
       - uses: actions/checkout@v7
@@ -73,7 +73,7 @@ jobs:
         form-factor: [mobile, desktop]
     # In Playwright's image too: Lighthouse runs in Playwright's pinned Chromium.
     container:
-      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      image: mcr.microsoft.com/playwright:v1.65.1-noble
       options: --user 1001
     steps:
       - uses: actions/checkout@v7

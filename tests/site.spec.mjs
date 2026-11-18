@@ -37,8 +37,13 @@ const settle = (page) =>
 
 const backdropWorker = (page) => page.workers().some((worker) => new URL(worker.url()).pathname === "/assets/landscape.js");
 
-// Leaves only the backdrop on screen: the canvas sits on <body>, everything else in .page.
-const hideContent = (page) => page.addStyleTag({ content: ".page { visibility: hidden !important; }" });
+// Leaves only the backdrop on screen: the canvas sits on <body>, everything else in .page. Every
+// screenshot of the backdrop comes after this. In WebKit it also takes the page's first screenshot
+// and drops it: WebKit leaves a canvas drawn from a worker out of that one (Playwright 1.65).
+const hideContent = async (page) => {
+  if (page.context().browser().browserType().name() === "webkit") await page.screenshot();
+  await page.addStyleTag({ content: ".page { visibility: hidden !important; }" });
+};
 
 // The backdrop is moving when two screenshots in a row differ. Polled: a device the backdrop
 // judges too slow gets a still frame for a few seconds before it tries again.
