@@ -52,4 +52,4 @@ job has passed. Pushes to other branches are only tested.
 ## Licence
 
 MIT, see [LICENSE](LICENSE). The fonts are under the SIL Open Font License (`assets/fonts/`),
-and the flags are public domain (Wikimedia Commons).
+and the flags come from [flag-icons](https://github.com/lipis/flag-icons), MIT (`assets/flags/`).
